@@ -1,0 +1,36 @@
+.container {
+    color: white;
+    background-color: black;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    height: 40vh;
+}
+
+.level-up {
+    display: flex;
+    width: 70%;
+    justify-content: space-around;
+}
+
+.show-level-up {
+    text-align: left;
+    display: flex;
+    margin-top: 40px;
+
+}
+
+.slu-title {
+    width: 30%;
+}
+.btn-close{
+    background-color: red;
+    color: white;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 5px 10px;
+    top: 10px;
+    right: 10px;
+    position: absolute;
+    border-radius: 5px;
+}
