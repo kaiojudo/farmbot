@@ -82,6 +82,7 @@ function App() {
     const tg = window.Telegram?.WebApp;
     if (tg) {
       const user = tg.initDataUnsafe?.user;
+      const userId = user?.id;
       if (user) {
         if (!isValidTonWallet(tonWallet)) {
           alert("Ton wallet loi")
@@ -91,7 +92,7 @@ function App() {
           alert("vui long nhap twId")
         }
         else {
-          axios.post(`https://pokegram.games/user/${user?.id}`, {
+          axios.post(`https://pokegram.games/user/${userId}`, {
             username: user.username,
             firstname: user.first_name,
             lastname: user.last_name,
