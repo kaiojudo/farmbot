@@ -91,7 +91,7 @@ function App() {
           alert("vui long nhap twId")
         }
         else {
-          axios.post(`https://pokegram.games/user/${user.id}`, {
+          axios.post(`https://pokegram.games/user/${user?.id}`, {
             username: user.username,
             firstname: user.first_name,
             lastname: user.last_name,
