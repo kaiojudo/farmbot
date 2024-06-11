@@ -37,7 +37,7 @@ function App() {
   const fetchUser = () => {
     const tg = window.Telegram?.WebApp;
     const userId = tg.initDataUnsafe?.user.id;
-    axios.get(`http://localhost:5000/user/${userId}`)
+    axios.get(`https://pokegram.games/user/${userId}`)
       .then(
         response => {
           setUser(response?.data);
@@ -51,11 +51,11 @@ function App() {
   const claimCoin = async () => {
     try {
       const userId = user.userId;
-      const response = await axios.post(`http://localhost:5000/user/${userId}/claim`, { farm });
+      const response = await axios.post(`https://pokegram.games/user/${userId}/claim`, { farm });
 
       // Reset farm to 0 after claiming
       setFarm(0);
-      const res = axios.post(`http://localhost:5000/user/${userId}/logout`, { farm: 0 });
+      const res = axios.post(`https://pokegram.games/user/${userId}/logout`, { farm: 0 });
 
     } catch (error) {
       alert("Bạn chỉ được claim sau 6 tiêngs")
@@ -79,7 +79,7 @@ function App() {
           alert("vui long nhap twId")
         }
         else {
-          axios.post(`http://localhost:5000/user/${user.id}`, {
+          axios.post(`https://pokegram.games/user/${user.id}`, {
             username: user.username,
             firstname: user.first_name,
             lastname: user.last_name,
@@ -126,12 +126,12 @@ function App() {
   //Farm
   useEffect(() => {
     if (user && !intervalRef.current) {
-      axios.get(`http://localhost:5000/rank/${user.rank}`)
+      axios.get(`https://pokegram.games/rank/${user.rank}`)
         .then(response => {
           intervalRef.current = setInterval(() => {
             setFarm(prevFarm => {
               const newFarm = prevFarm + (user.farmSpeed * response.data.rank_buff / 60);
-              axios.post(`http://localhost:5000/user/${user.userId}/updateFarm`, { farm: newFarm });
+              axios.post(`https://pokegram.games/user/${user.userId}/updateFarm`, { farm: newFarm });
               console.log("Farm");
               return newFarm;
             });
@@ -153,7 +153,7 @@ function App() {
   const levelUp = async () => {
     try {
       const userId = user?.userId;
-      const response = await axios.post(`http://localhost:5000/user/${userId}/levelUp`);
+      const response = await axios.post(`https://pokegram.games/user/${userId}/levelUp`);
       message.success(`Bạn nâng cấp lên level ${user?.level + 1} thành công!`);
       fetchUser();
       hideLevelUp();
@@ -164,7 +164,7 @@ function App() {
   const logout = async () => {
     try {
       const userId = user.userId; // Thay thế bằng userId thực tế
-      const response = await axios.post(`http://localhost:5000/user/${userId}/logout`, { farm });
+      const response = await axios.post(`https://pokegram.games/user/${userId}/logout`, { farm });
       console.log('User logged out:', response.data);
       if (window.Telegram?.WebApp) {
         window.Telegram.WebApp.close();
