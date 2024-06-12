@@ -310,6 +310,7 @@ function App() {
     if (response) {
       setClaimQ(false);
       message.success(`Bạn nhận thưởng thành công!`);
+      fetchUser();
     }
   }
   return (
