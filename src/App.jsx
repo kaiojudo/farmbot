@@ -95,7 +95,6 @@ function App() {
 
       // Reset farm to 0 after claiming
       setFarm(0);
-      const res = axios.post(`https://pokegram.games/user/${userId}/logout`, { farm: 0 });
       // Dừng farming trong 2 giây
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
@@ -305,6 +304,7 @@ function App() {
       }
     }, 5000);
   };
+  //Claim Join Quest
   const claimJoinQuest = async () => {
     const userId = user.userId;
     const response = await axios.post(`https://pokegram.games/user/updateQuest/${userId}`);
