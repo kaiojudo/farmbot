@@ -18,7 +18,6 @@ function App() {
   const [idTwitter, setIdTwitter] = useState('');
   const [tonWallet, setTonWallet] = useState('');
   const [loading, setLoading] = useState(false);
-  const [copyMessage, setCopyMessage] = useState('');
   const [inviteBy, setInviteBy] = useState(null);
   const [quest, setQuest] = useState(false);
   const [farm, setFarm] = useState(0);
@@ -30,6 +29,18 @@ function App() {
   const [groupButtonImg, setGroupButtonImg] = useState('./checkbox.png');
   const [invitedUsers, setInvitedUsers] = useState([]);
   const [claimQ, setClaimQ] = useState(true);
+  const [copied, setCopied] = useState(false);
+
+  const textAreaRef = useRef(null);
+
+  const handleCopyClick = () => {
+    if (textAreaRef.current) {
+      textAreaRef.current.select();
+      document.execCommand('copy');
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000); // Đặt lại trạng thái sau 2 giây
+    }
+  };
 
 
   //Validate Tonwallet
@@ -145,17 +156,6 @@ function App() {
 
       }
     }
-  };
-
-  // Hàm xử lý khi người dùng nhấn nút "Copy Invite Link"
-  const handleCopyInviteLink = (inviteRef) => {
-    const inviteLink = `https://t.me/tele_farming_bot/farming?start=${inviteRef}`;
-    navigator.clipboard.writeText(inviteLink).then(() => {
-      setCopyMessage('Invite link copied to clipboard!');
-      setTimeout(() => setCopyMessage(''), 3000); // Xóa thông báo sau 3 giây
-    }).catch(err => {
-      console.error('Failed to copy text: ', err);
-    });
   };
   //show Menu Quest
   const showMenuQuest = () => {
@@ -329,8 +329,6 @@ function App() {
         setIdTwitter={setIdTwitter}
         setTonWallet={setTonWallet}
         loading={loading}
-        handleCopyInviteLink={handleCopyInviteLink}
-        copyMessage={copyMessage}
         showMenuQuest={showMenuQuest}
       />
       <button onClick={showMenuQuest}>Quest</button>
@@ -355,6 +353,9 @@ function App() {
           levelUp={levelUp}
           nextClaim={nextClaim}
           invitedUsers={invitedUsers}
+          handleCopyClick={handleCopyClick}
+          textAreaRef={textAreaRef}
+          copied={copied}
         />}
       {showMenuLevelUp && <ShowLevelUp
         user={user}

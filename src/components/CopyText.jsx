@@ -17,15 +17,7 @@ export default function CopyText() {
 
     return (
         <div>
-            <textarea
-                ref={textAreaRef}
-                value={textToCopy}
-                readOnly
-                style={{ position: 'absolute', left: '-9999px' }}
-            />
-            <button onClick={handleCopyClick}>
-                {copied ? 'Copied!' : 'Copy Text'}
-            </button>
+       
         </div>
     );
 }
