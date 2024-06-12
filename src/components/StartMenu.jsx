@@ -9,7 +9,7 @@ export default function StartMenu(props) {
                 <div>
                     <p>Farm Menu</p>
                     <p>{user.firstname} {user.lastname} Level: {user.level}</p>
-                    <p>{user.coin}</p>
+                    <p>{(user.coin).toFixed(4)}</p>
                 </div>
             ) : (
                 <div>

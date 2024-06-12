@@ -25,11 +25,13 @@ export default function FarmField(props) {
                 <li>
                     <p>Name</p>
                     <p>Day Join</p>
+                    <p>Coin Can Claim</p>
                 </li>
                 {invitedUsers.map(user => (
                     <li key={user._id}>
                         <p>{user.username}</p>
                         <p>{new Date(user.dateCreate).toLocaleString().split(',')[0]}</p>
+                        <p>{user.shareCoin.toFixed(4)}</p>
                     </li>
                 ))}
             </ul>
