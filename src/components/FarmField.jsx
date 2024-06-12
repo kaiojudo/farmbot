@@ -10,7 +10,7 @@ export default function FarmField(props) {
             {nextClaim && <p>Next Claim: {nextClaim.toLocaleString()}</p>}
             <button onClick={claimCoin}>Claim</button>
             <button onClick={showLevelUp}>Level Up</button>
-            <p>https://t.me/tele_farming_bot?start=${user.inviteRef}</p>
+            <p>https://t.me/tele_farming_bot?start={user.inviteRef}</p>
             <textarea
                 ref={textAreaRef}
                 value={textToCopy}
