@@ -8,6 +8,7 @@ import { confirmAlert } from 'react-confirm-alert'; // Import thư viện
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import CSS
 import ShowLevelUp from './components/ShowLevelUp';
 import { message } from 'antd';
+import CopyText from './components/CopyText';
 
 
 
@@ -363,6 +364,7 @@ function App() {
       <button onClick={handleLogoutClick}>
         Close WebApp
       </button>
+      <CopyText />
 
     </div>
 
