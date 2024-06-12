@@ -18,7 +18,7 @@ export default function FarmField(props) {
                 style={{ position: 'absolute', left: '-9999px' }}
             />
             <button onClick={handleCopyClick}>
-                {copied ? 'Copied!' : 'Copy Text'}
+                {copied ? 'Copied!' : 'Copy Link'}
             </button>
             <h2>Invited Users</h2>
             <ul className='show-invite'>
