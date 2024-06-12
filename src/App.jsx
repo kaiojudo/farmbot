@@ -88,28 +88,37 @@ function App() {
         setLoading(true)
       )
   }
+  //
+  const updateUserData = () => {
+    const tg = window.Telegram?.WebApp;
+    const userId = tg.initDataUnsafe?.user.id;
+    axios.get(`https://pokegram.games/user/${userId}`)
+      .then(
+        response => {
+          setUser(response?.data);
+        }
+      )
+  }
+
+  //Claim Coin
   const claimCoin = async () => {
     try {
       const userId = user.userId;
       const response = await axios.post(`https://pokegram.games/user/${userId}/claim`, { farm });
-
-      // Reset farm to 0 after claiming
       setFarm(0);
-      // Dừng farming trong 2 giây
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
+      startFarming();
+      updateUserData();
+      // if (intervalRef.current) {
+      //   clearInterval(intervalRef.current);
+      //   intervalRef.current = null;
+      // }
 
-      setTimeout(() => {
-        startFarming();
-      }, 2000); // Đợi 2 giây trước khi tiếp tục farming
+      // setTimeout(() => {
+
+      // }, 1000);
 
     } catch (error) {
       alert("Bạn chỉ được claim sau 6 tiêngs")
-    }
-    finally {
-      fetchUser();
     }
   };
 
