@@ -21,7 +21,6 @@ function App() {
   const [inviteBy, setInviteBy] = useState(null);
   const [quest, setQuest] = useState(false);
   const [farm, setFarm] = useState(0);
-  const [rank, setRank] = useState(0);
   const [showMenuLevelUp, setShowMenuLevelUp] = useState(false);
   const [nextClaim, setNextClaim] = useState(null);
   const [joinGroup, setJoinGroup] = useState(false);
@@ -29,6 +28,7 @@ function App() {
   const [channelButtonImg, setChannelButtonImg] = useState('./checkbox.png');
   const [groupButtonImg, setGroupButtonImg] = useState('./checkbox.png');
   const [invitedUsers, setInvitedUsers] = useState([]);
+  const [claimQ, setClaimQ] = useState(true);
 
 
   //Validate Tonwallet
@@ -51,7 +51,6 @@ function App() {
           setUser(response?.data);
           setFarm(response?.data.farm);
           const userData = response?.data;
-          console.log(userData);
           if (userData.lastClaimTime) {
             const lastClaimTime = new Date(userData.lastClaimTime);
             const nextClaimTime = new Date(lastClaimTime.getTime() + 6 * 60 * 60 * 1000); // Cộng thêm 6 tiếng
@@ -305,6 +304,14 @@ function App() {
       }
     }, 5000);
   };
+  const claimJoinQuest = async () => {
+    const userId = user.userId;
+    const response = await axios.post(`https://pokegram.games/user/updateQuest/${userId}`);
+    if (response) {
+      setClaimQ(false);
+      message.success(`Bạn nhận thưởng thành công!`);
+    }
+  }
   return (
 
     <div className="App">
@@ -322,12 +329,15 @@ function App() {
       />
       <button onClick={showMenuQuest}>Quest</button>
       {quest && <Quest
+        claimQ={claimQ}
+        user={user}
         joinChannel={joinChannel}
         joinGroup={joinGroup}
         channelButtonImg={channelButtonImg}
         groupButtonImg={groupButtonImg}
         handleCheckCh={handleCheckCh}
         handleCheckGr={handleCheckGr}
+        claimJoinQuest={claimJoinQuest}
 
       />}
       {user &&
