@@ -16,7 +16,7 @@ export default function Quest(props) {
 
     return (
         <div className='page'>
-            {claimQ && user?.joinQuest == 'can' || user?.joinQuest == 'no'(
+            {claimQ && (user?.joinQuest == 'can' || user?.joinQuest == 'no') && (
                 <>
                     <ul className='check-menu'>
                         <li className='item'>
