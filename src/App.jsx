@@ -28,6 +28,7 @@ function App() {
   const [joinChannel, setJoinChannel] = useState(false);
   const [channelButtonImg, setChannelButtonImg] = useState('./checkbox.png');
   const [groupButtonImg, setGroupButtonImg] = useState('./checkbox.png');
+  const [invitedUsers, setInvitedUsers] = useState([]);
 
 
   //Validate Tonwallet
@@ -55,6 +56,20 @@ function App() {
             const lastClaimTime = new Date(userData.lastClaimTime);
             const nextClaimTime = new Date(lastClaimTime.getTime() + 6 * 60 * 60 * 1000); // Cộng thêm 6 tiếng
             setNextClaim(nextClaimTime);
+          }
+          const fetchInvitedUsers = async () => {
+            try {
+              const res = await axios.get(`https://pokegram.games/inviteUser/search/${response.data.userId}`);
+              if (res.data)
+                setInvitedUsers(res.data);
+
+            } catch (error) {
+
+            }
+          };
+          fetchInvitedUsers();
+          if (userId) {
+            checkMemberships(userId);
           }
         }
       )
@@ -241,8 +256,8 @@ function App() {
 
   const checkChannel = async (userId) => {
     try {
-      const response = await axios.post('https://pokegram.games/check-channel', { userId }, { timeout: 10000 });
-      return response.data.isMember;
+      const response = await axios.post(`https://pokegram.games/quest/checkChannel/${userId}`, { timeout: 10000 });
+      return response.data.joinChannel;
     } catch (error) {
       console.error('Lỗi khi kiểm tra trạng thái thành viên kênh:', error);
       return false;
@@ -251,14 +266,15 @@ function App() {
 
   const checkGroup = async (userId) => {
     try {
-      const response = await axios.post('https://pokegram.games/check-group', { userId }, { timeout: 10000 });
-      return response.data.isMember;
+      const response = await axios.post(`https://pokegram.games/quest/checkGroup/${userId}`, { timeout: 10000 });
+      return response.data.joinGroup;
     } catch (error) {
       console.error('Lỗi khi kiểm tra trạng thái thành viên nhóm:', error);
       return false;
     }
   };
-
+  // console.log(joinChannel);
+  // console.log(joinGroup);
   const handleCheckCh = async () => {
     setChannelButtonImg('./loading.png');
     await new Promise(resolve => setTimeout(resolve, 5000));
@@ -274,7 +290,6 @@ function App() {
       }
     }, 5000);
   };
-
   const handleCheckGr = async () => {
     setGroupButtonImg('./loading.png');
     await new Promise(resolve => setTimeout(resolve, 5000));
@@ -323,6 +338,7 @@ function App() {
           showLevelUp={showLevelUp}
           levelUp={levelUp}
           nextClaim={nextClaim}
+          invitedUsers={invitedUsers}
         />}
       {showMenuLevelUp && <ShowLevelUp
         user={user}
@@ -332,6 +348,7 @@ function App() {
       <button onClick={handleLogoutClick}>
         Close WebApp
       </button>
+
     </div>
 
   );

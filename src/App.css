@@ -59,3 +59,14 @@ button:focus-visible {
     color: black;
     width: 100%;
 }
+.show-invite{
+    list-style: none;
+    padding: 0;
+}
+.show-invite li{
+    display: flex;
+    text-align: left;
+}
+.show-invite li p{
+    width: 50%;
+}
