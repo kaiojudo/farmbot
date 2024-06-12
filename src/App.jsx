@@ -307,7 +307,7 @@ function App() {
   const claimJoinQuest = async () => {
     const userId = user.userId;
     const response = await axios.post(`https://pokegram.games/user/updateQuest/${userId}`);
-    if (response.message == 1) {
+    if (response.data.message == 1) {
       setClaimQ(false);
       message.success(`Bạn nhận thưởng thành công!`);
     }
