@@ -30,6 +30,7 @@ function App() {
   const [invitedUsers, setInvitedUsers] = useState([]);
   const [claimQ, setClaimQ] = useState(true);
   const [copied, setCopied] = useState(false);
+  const [totalShareCoin, setTotalShareCoin] = useState(0);
 
   const textAreaRef = useRef(null);
 
@@ -70,10 +71,22 @@ function App() {
           }
           const fetchInvitedUsers = async () => {
             try {
-              const res = await axios.get(`http://localhost:5000/inviteUser/search/${response.data.userId}`);
-              if (res.data)
+              const res = await axios.get(`http://localhost:5000/inviteUser/search/${response?.data.userId}`);
+              if (res.data != 0) {
                 setInvitedUsers(res.data);
+                console.log(invitedUsers);
+                const resp = await axios.get(`http://localhost:5000/user/totalShareCoin/${response?.data.userId}`);
+                if (resp.data.totalShareCoin) {
+                  setTotalShareCoin(resp.data.totalShareCoin);
+                }
 
+              }
+
+              if (user.lastClaimTime) {
+                const lastClaimTime = new Date();
+                const nextClaimTime = new Date(lastClaimTime.getTime() + 6 * 60 * 60 * 1000); // Cộng thêm 6 tiếng
+                setNextClaim(nextClaimTime);
+              }
             } catch (error) {
 
             }
@@ -89,6 +102,8 @@ function App() {
       )
   }
   //
+  // console.log(totalShareCoin);
+
   const updateUserData = () => {
     const tg = window.Telegram?.WebApp;
     const userId = tg.initDataUnsafe?.user.id;
@@ -98,10 +113,26 @@ function App() {
           setUser(response?.data);
           const fetchInvitedUsers = async () => {
             try {
-              const res = await axios.get(`http://localhost:5000/inviteUser/search/${response.data.userId}`);
-              if (res.data)
+              const res = await axios.get(`http://localhost:5000/inviteUser/search/${userId}`);
+              if (res.data != 0) {
                 setInvitedUsers(res.data);
+                console.log(invitedUsers);
+                axios.get(`http://localhost:5000/user/totalShareCoin/${userId}`)
+                  .then(
+                    response => {
+                      if (response.data.totalShareCoin) {
+                        setTotalShareCoin(response.data.totalShareCoin);
+                      }
+                    }
+                  )
 
+              }
+
+              if (user.lastClaimTime) {
+                const lastClaimTime = new Date();
+                const nextClaimTime = new Date(lastClaimTime.getTime() + 6 * 60 * 60 * 1000); // Cộng thêm 6 tiếng
+                setNextClaim(nextClaimTime);
+              }
             } catch (error) {
 
             }
@@ -110,7 +141,6 @@ function App() {
         }
       )
   }
-
   //Claim Coin
   const claimCoin = async () => {
     try {
@@ -119,7 +149,6 @@ function App() {
       setFarm(0);
       startFarming();
       updateUserData();
-
     } catch (error) {
       alert("Bạn chỉ được claim sau 6 tiêngs")
     }
@@ -354,7 +383,7 @@ function App() {
         handleCheckCh={handleCheckCh}
         handleCheckGr={handleCheckGr}
         claimJoinQuest={claimJoinQuest}
-        
+
 
       />}
       {user &&
@@ -369,6 +398,7 @@ function App() {
           handleCopyClick={handleCopyClick}
           textAreaRef={textAreaRef}
           copied={copied}
+          totalShareCoin={totalShareCoin}
         />}
       {showMenuLevelUp && <ShowLevelUp
         user={user}
