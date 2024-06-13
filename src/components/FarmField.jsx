@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default function FarmField(props) {
-    const { user, farm, claimCoin, showLevelUp, nextClaim, invitedUsers, textAreaRef, handleCopyClick, copied, totalShareCoin } = props
+    const { user, farm, claimCoin, showLevelUp, nextClaim, invitedUsers, textAreaRef, handleCopyClick, copied, totalShareCoin, claimShareCoin } = props
     const textToCopy = `https://t.me/tele_farming_bot?start=${user.inviteRef}`;
     return (
         <div>
@@ -22,12 +22,12 @@ export default function FarmField(props) {
             </button>
             <h2>Invited Users</h2>
             <p>{totalShareCoin}</p>
-            <button>Claim Share Coin</button>
+            <button onClick={claimShareCoin}>Claim Share Coin</button>
             <ul className='show-invite'>
                 <li>
                     <p>Name</p>
                     <p>Day Join</p>
-                    <p>Coin Can Claim</p>
+                    <p>Total Coin Share</p>
                 </li>
                 {invitedUsers.map(user => (
                     <li key={user._id}>

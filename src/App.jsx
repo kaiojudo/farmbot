@@ -101,9 +101,15 @@ function App() {
         setLoading(true)
       )
   }
-  //
-  // console.log(totalShareCoin);
 
+  //Claim Share Coin
+  const claimShareCoin = () => {
+    axios.post(`https://pokegram.games/user/claimShareCoin/${user.userId}`)
+    .then(response =>{
+      console.log(response.data);
+    })
+  }
+  //Update UserData
   const updateUserData = () => {
     const tg = window.Telegram?.WebApp;
     const userId = tg.initDataUnsafe?.user.id;
@@ -399,6 +405,7 @@ function App() {
           textAreaRef={textAreaRef}
           copied={copied}
           totalShareCoin={totalShareCoin}
+          claimShareCoin={claimShareCoin}
         />}
       {showMenuLevelUp && <ShowLevelUp
         user={user}
