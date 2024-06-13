@@ -70,3 +70,6 @@ button:focus-visible {
 .show-invite li p{
     width: 50%;
 }
+.close{
+    margin-top: 10px;
+}
