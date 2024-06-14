@@ -36,6 +36,8 @@ function App() {
   const [showOffline, setShowOffline] = useState(true);
 
   const [offlineTime, setOfflineTime] = useState(null);
+  const tg = window.Telegram.WebApp;
+  const userId = tg.initDataUnsafe?.user.id;
   useEffect(() => {
     const tg = window.Telegram.WebApp;
     const userId = tg.initDataUnsafe?.user.id;
@@ -83,7 +85,7 @@ function App() {
       window.removeEventListener('beforeunload', handleBeforeUnload);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [user?.userId]);
+  }, [userId]);
   const textAreaRef = useRef(null);
 
   const handleCopyClick = () => {
