@@ -48,7 +48,6 @@ function App() {
       ws.send(JSON.stringify({ type: 'login', userId }));
 
       // Cập nhật thời gian truy cập khi người dùng mở Mini App
-      // Cập nhật thời gian truy cập khi người dùng mở Mini App
       const updateLoginTime = async () => {
         try {
           const response = await axios.post(`https://pokegram.games/user/${userId}/login`);
