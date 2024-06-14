@@ -65,18 +65,25 @@ function App() {
       }
     };
 
-    // Đăng ký sự kiện khi người dùng đóng Mini App
-    tg.onEvent('close', handleLogoutTime);
+    const handleBeforeUnload = (event) => {
+      handleLogoutTime();
+    };
 
-
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        handleLogoutTime();
+      }
+    };
     updateLoginTime();
 
-    window.addEventListener('beforeunload', handleLogoutTime);
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
-    return() => {
-      tg.offEvent('close', handleLogoutTime);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [user?.userId]);
+  }, [user.userId]);
   const textAreaRef = useRef(null);
 
   const handleCopyClick = () => {
