@@ -39,24 +39,6 @@ function App() {
   const tg = window.Telegram.WebApp;
   const userId = tg.initDataUnsafe?.user.id;
   useEffect(() => {
-    const tg = window.Telegram.WebApp;
-    const userId = tg.initDataUnsafe?.user.id;
-
-    const updateLoginTime = async () => {
-      try {
-        const response = await axios.post(`https://pokegram.games/user/${userId}/login`);
-        const { timeLogIn, timeLogOut } = response.data;
-
-        if (timeLogIn && timeLogOut) {
-          const offlineDuration = (new Date(timeLogIn) - new Date(timeLogOut)) / 1000; // Tính bằng giây
-          setOfflineTime(offlineDuration);
-        }
-      } catch (error) {
-        console.error('Error updating login time:', error);
-      }
-    };
-
-
     const handleLogoutTime = async () => {
       const logoutTime = new Date().toISOString();
       try {
@@ -76,6 +58,17 @@ function App() {
         handleLogoutTime();
       }
     };
+
+    // Cập nhật thời gian truy cập khi người dùng mở Mini App
+    const updateLoginTime = async () => {
+      try {
+        const response = await axios.post(`https://pokegram.games/user/${userId}/login`);
+        console.log('Login time updated:', response.data.timeLogIn);
+      } catch (error) {
+        console.error('Error updating login time:', error);
+      }
+    };
+
     updateLoginTime();
 
     window.addEventListener('beforeunload', handleBeforeUnload);
