@@ -37,35 +37,39 @@ function App() {
 
   const [offlineTime, setOfflineTime] = useState(null);
   useEffect(() => {
-    const updateLoginTime = async () => {
-      try {
-        const response = await axios.post(`https://pokegram.games/user/${user?.userId}/login`);
-        const { timeLogIn, timeLogOut } = response.data;
-
-        if (timeLogIn && timeLogOut) {
-          const offlineDuration = (new Date(timeLogIn) - new Date(timeLogOut)) / 1000; // Tính bằng giây
-          setOfflineTime(offlineDuration);
-        }
-      } catch (error) {
-        console.error('Error updating login time:', error);
-      }
-    };
+    const tg = window.Telegram.WebApp;
 
     const handleLogoutTime = async () => {
       const logoutTime = new Date().toISOString();
       try {
-        await axios.post(`https://pokegram.games/user/${user.userId}/logout`, { timeLogOut: logoutTime });
+        await axios.post(`http://localhost:5000/user/${userId}/logout`, { timeLogOut: logoutTime });
+        console.log('Logout time saved:', logoutTime);
       } catch (error) {
         console.error('Error saving logout time:', error);
       }
     };
 
+    // Đăng ký sự kiện khi người dùng rời khỏi Mini App
+    tg.onEvent('viewportChanged', (isVisible) => {
+      if (!isVisible) {
+        handleLogoutTime();
+      }
+    });
+
+    // Cập nhật thời gian truy cập khi người dùng mở Mini App
+    const updateLoginTime = async () => {
+      try {
+        const response = await axios.post(`http://localhost:5000/user/${userId}/login`);
+        console.log('Login time updated:', response.data.timeLogIn);
+      } catch (error) {
+        console.error('Error updating login time:', error);
+      }
+    };
+
     updateLoginTime();
-
-    window.addEventListener('beforeunload', handleLogoutTime);
-
     return () => {
-      window.removeEventListener('beforeunload', handleLogoutTime);
+      // Loại bỏ sự kiện khi component unmount
+      tg.offEvent('viewportChanged');
     };
   }, [user?.userId]);
   const textAreaRef = useRef(null);
