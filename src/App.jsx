@@ -42,7 +42,7 @@ function App() {
     const handleLogoutTime = async () => {
       const logoutTime = new Date().toISOString();
       try {
-        await axios.post(`http://localhost:5000/user/${userId}/logout`, { timeLogOut: logoutTime });
+        await axios.post(`https://pokegram.games/user/${userId}/logout`, { timeLogOut: logoutTime });
         console.log('Logout time saved:', logoutTime);
       } catch (error) {
         console.error('Error saving logout time:', error);
@@ -59,7 +59,7 @@ function App() {
     // Cập nhật thời gian truy cập khi người dùng mở Mini App
     const updateLoginTime = async () => {
       try {
-        const response = await axios.post(`http://localhost:5000/user/${userId}/login`);
+        const response = await axios.post(`https://pokegram.games/user/${userId}/login`);
         console.log('Login time updated:', response.data.timeLogIn);
       } catch (error) {
         console.error('Error updating login time:', error);
