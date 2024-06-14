@@ -38,7 +38,7 @@ function App() {
   const [offlineTime, setOfflineTime] = useState(null);
   useEffect(() => {
     const tg = window.Telegram.WebApp;
-
+    const userId = tg.initDataUnsafe?.user.id;
     const handleLogoutTime = async () => {
       const logoutTime = new Date().toISOString();
       try {
