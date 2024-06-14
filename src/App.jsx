@@ -9,6 +9,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css'; // Import CSS
 import ShowLevelUp from './components/ShowLevelUp';
 import { message } from 'antd';
 import CopyText from './components/CopyText';
+import Offline from './components/Offline';
 
 
 
@@ -31,7 +32,62 @@ function App() {
   const [claimQ, setClaimQ] = useState(true);
   const [copied, setCopied] = useState(false);
   const [totalShareCoin, setTotalShareCoin] = useState(0);
+  const [rankBuff, setRankBuff] = useState(0);
 
+  const [offlineTime, setOfflineTime] = useState(null);
+  useEffect(() => {
+    const updateLoginTime = async () => {
+      const tg = window.Telegram?.WebApp;
+      const userId = tg.initDataUnsafe?.user.id;
+      try {
+        const response = await axios.post(`http://localhost:5000/user/${userId}/login`);
+        const { timeLogIn, timeLogOut } = response.data;
+
+        if (timeLogIn && timeLogOut) {
+          const offlineDuration = (new Date(timeLogIn) - new Date(timeLogOut)) / 1000; // Tính bằng giây
+          setOfflineTime(offlineDuration);
+        }
+      } catch (error) {
+        console.error('Error updating login time:', error);
+      }
+    };
+
+    updateLoginTime();
+  }, []);
+
+  const handleLogoutTime = () => {
+    const logoutTime = new Date().toISOString();
+    const tg = window.Telegram?.WebApp;
+    const userId = tg.initDataUnsafe?.user.id;
+    // Gửi thời gian rời khỏi trang đến backend
+    axios.post(`http://localhost:5000/user/${userId}/logout`, { timeLogOut: logoutTime })
+      .then(response => {
+        console.log('Logout time saved:', response.data);
+      })
+      .catch(error => {
+        console.error('Error saving logout time:', error);
+      });
+  };
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      handleLogoutTime();
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        handleLogoutTime();
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
   const textAreaRef = useRef(null);
 
   const handleCopyClick = () => {
@@ -217,6 +273,9 @@ function App() {
     if (user && !intervalRef.current) {
       try {
         const response = await axios.get(`http://localhost:5000/rank/${user.rank}`);
+        if (response.data) {
+          setRankBuff(response.data.rank_buff);
+        }
         intervalRef.current = setInterval(() => {
           setFarm(prevFarm => {
             const newFarm = prevFarm + (user.farmSpeed * response.data.rank_buff / 60);
@@ -371,6 +430,26 @@ function App() {
 
     }
   }
+  const claimOffline = async () => {
+    try {
+      const userId = user.userId;
+      const offlineCoin = user?.farmSpeed * rankBuff / 60 * (offlineTime - 10) * 0.7;
+      const response = await axios.post(`http://localhost:5000/user/${userId}/claimoffline`, { offlineCoin });
+      updateUserData();
+    } catch (error) {
+      alert("Bạn chỉ được claim sau 6 tiêngs")
+    }
+  }
+  const claimOfflinePro = async () => {
+    try {
+      const userId = user.userId;
+      const offlineCoin = user?.farmSpeed * rankBuff / 60 * (offlineTime - 10);
+      const response = await axios.post(`http://localhost:5000/user/${userId}/claimoffline`, { offlineCoin });
+      updateUserData();
+    } catch (error) {
+      alert("Bạn chỉ được claim sau 6 tiêngs")
+    }
+  }
   return (
 
     <div className="App">
@@ -422,6 +501,14 @@ function App() {
         Close WebApp
       </button>
       <CopyText />
+      {offlineTime > 10 &&
+        <Offline
+          user={user}
+          rankBuff={rankBuff}
+          offlineTime={offlineTime}
+          claimOffline={claimOffline}
+          claimOfflinePro={claimOfflinePro}
+        />}
 
     </div>
 
