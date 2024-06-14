@@ -36,7 +36,7 @@ export default function FarmField(props) {
                         <li key={user._id}>
                             <p>{user.username}</p>
                             <p>{new Date(user.dateCreate).toLocaleString().split(',')[0]}</p>
-                            <p>{user.shareCoin.toFixed(4)}</p>
+                            <p>{user.totalShareCoin.toFixed(4)}</p>
                         </li>
                     ))}
                 </ul>
