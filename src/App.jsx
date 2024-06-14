@@ -73,8 +73,8 @@ function App() {
 
     window.addEventListener('beforeunload', handleLogoutTime);
 
-    return () => {
-      window.removeEventListener('beforeunload', handleLogoutTime);
+    return() => {
+      tg.offEvent('close', handleLogoutTime);
     };
   }, [user?.userId]);
   const textAreaRef = useRef(null);
