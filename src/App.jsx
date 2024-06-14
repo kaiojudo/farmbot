@@ -83,7 +83,7 @@ function App() {
       window.removeEventListener('beforeunload', handleBeforeUnload);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [user.userId]);
+  }, [user?.userId]);
   const textAreaRef = useRef(null);
 
   const handleCopyClick = () => {
