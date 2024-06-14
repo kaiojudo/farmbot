@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function Offline(props) {
     const {
-        user, rankBuff, offlineTime, claimOffline, claimOfflinePro
+        user, rankBuff, offlineTime, claimOffline, claimOfflinePro, hideOfflineMenu
     } = props
     // console.log(user);
     return (
@@ -13,6 +13,7 @@ export default function Offline(props) {
             <div className='claim-button'>
                 <button className='claim' onClick={claimOffline}>Claim</button>
                 <button className='claimPro' onClick={claimOfflinePro}>Claim x 160%</button>
+                <button className='btn-close' onClick={hideOfflineMenu}>X</button>
             </div>
         </div>
     )
