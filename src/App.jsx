@@ -38,47 +38,49 @@ function App() {
   const [offlineTime, setOfflineTime] = useState(null);
   const tg = window.Telegram.WebApp;
   const userId = tg.initDataUnsafe?.user.id;
+  //logout
+
   useEffect(() => {
-    const handleLogoutTime = async () => {
-      const logoutTime = new Date().toISOString();
-      try {
-        await axios.post(`https://pokegram.games/user/${userId}/logout`, { timeLogOut: logoutTime });
-        console.log('Logout time saved:', logoutTime);
-      } catch (error) {
-        console.error('Error saving logout time:', error);
-      }
+    const ws = new WebSocket('ws://localhost:8080');
+
+    ws.onopen = () => {
+      console.log('Connected to WebSocket server');
+      ws.send(JSON.stringify({ type: 'login', userId }));
+
+      // Cập nhật thời gian truy cập khi người dùng mở Mini App
+      // Cập nhật thời gian truy cập khi người dùng mở Mini App
+      const updateLoginTime = async () => {
+        try {
+          const response = await axios.post(`http://localhost:5000/user/${userId}/login`);
+          console.log('Login time updated:', response.data.timeLogIn);
+          if (response.data.offlineTime !== null) {
+            setOfflineTime(response.data.offlineTime);
+          }
+        } catch (error) {
+          console.error('Error updating login time:', error);
+        }
+      };
+      updateLoginTime();
     };
 
-    const handleBeforeUnload = (event) => {
-      handleLogoutTime();
+    ws.onclose = () => {
+      console.log('Disconnected from WebSocket server');
     };
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'hidden') {
-        handleLogoutTime();
+        ws.close();
       }
     };
 
-    // Cập nhật thời gian truy cập khi người dùng mở Mini App
-    const updateLoginTime = async () => {
-      try {
-        const response = await axios.post(`https://pokegram.games/user/${userId}/login`);
-        console.log('Login time updated:', response.data.timeLogIn);
-      } catch (error) {
-        console.error('Error updating login time:', error);
-      }
-    };
-
-    updateLoginTime();
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
+      ws.close();
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, [userId]);
+
   const textAreaRef = useRef(null);
 
   const handleCopyClick = () => {
@@ -93,7 +95,7 @@ function App() {
   const handleLogoutTime = async () => {
     const logoutTime = new Date().toISOString();
     try {
-      await axios.post(`https://pokegram.games/user/${user.userId}/logout`, { timeLogOut: logoutTime });
+      await axios.post(`http://localhost:5000/user/${user.userId}/logout`, { timeLogOut: logoutTime });
       console.log('Logout time saved:', logoutTime);
     } catch (error) {
       console.error('Error saving logout time:', error);
@@ -115,7 +117,7 @@ function App() {
   const fetchUser = () => {
     const tg = window.Telegram?.WebApp;
     const userId = tg.initDataUnsafe?.user.id;
-    axios.get(`https://pokegram.games/user/${userId}`)
+    axios.get(`http://localhost:5000/user/${userId}`)
       .then(
         response => {
           setUser(response?.data);
@@ -129,11 +131,11 @@ function App() {
 
           const fetchInvitedUsers = async () => {
             try {
-              const res = await axios.get(`https://pokegram.games/inviteUser/search/${response?.data.userId}`);
+              const res = await axios.get(`http://localhost:5000/inviteUser/search/${response?.data.userId}`);
               if (res.data != 0) {
                 setInvitedUsers(res.data);
                 // console.log(invitedUsers);
-                const resp = await axios.get(`https://pokegram.games/user/totalShareCoin/${response?.data.userId}`);
+                const resp = await axios.get(`http://localhost:5000/user/totalShareCoin/${response?.data.userId}`);
                 if (resp.data.totalShareCoin) {
                   setTotalShareCoin(resp.data.totalShareCoin);
                 }
@@ -162,7 +164,7 @@ function App() {
 
   //Claim Share Coin
   const claimShareCoin = async () => {
-    const res = await axios.post(`https://pokegram.games/user/claimShareCoin/${user.userId}`)
+    const res = await axios.post(`http://localhost:5000/user/claimShareCoin/${user.userId}`)
     setTotalShareCoin(0);
     updateData();
     setNextClaim(user.nextClaimTime);
@@ -171,7 +173,7 @@ function App() {
   const updateData = () => {
     const tg = window.Telegram?.WebApp;
     const userId = tg.initDataUnsafe?.user.id;
-    axios.get(`https://pokegram.games/user/${userId}`)
+    axios.get(`http://localhost:5000/user/${userId}`)
       .then(
         response => {
           setUser(response?.data);
@@ -181,17 +183,17 @@ function App() {
   const updateUserData = () => {
     const tg = window.Telegram?.WebApp;
     const userId = tg.initDataUnsafe?.user.id;
-    axios.get(`https://pokegram.games/user/${userId}`)
+    axios.get(`http://localhost:5000/user/${userId}`)
       .then(
         response => {
           setUser(response?.data);
           const fetchInvitedUsers = async () => {
             try {
-              const res = await axios.get(`https://pokegram.games/inviteUser/search/${userId}`);
+              const res = await axios.get(`http://localhost:5000/inviteUser/search/${userId}`);
               if (res.data != 0) {
                 setInvitedUsers(res.data);
                 // console.log(invitedUsers);
-                axios.get(`https://pokegram.games/user/totalShareCoin/${userId}`)
+                axios.get(`http://localhost:5000/user/totalShareCoin/${userId}`)
                   .then(
                     response => {
                       if (response.data.totalShareCoin) {
@@ -224,7 +226,7 @@ function App() {
   const claimCoin = async () => {
     try {
       const userId = user.userId;
-      const response = await axios.post(`https://pokegram.games/user/${userId}/claim`, { farm });
+      const response = await axios.post(`http://localhost:5000/user/${userId}/claim`, { farm });
       setFarm(0);
       startFarming();
       updateUserData();
@@ -246,7 +248,7 @@ function App() {
           alert("vui long nhap twId")
         }
         else {
-          axios.post(`https://pokegram.games/user/${user.id}`, {
+          axios.post(`http://localhost:5000/user/${user.id}`, {
             username: user.username,
             firstname: user.first_name,
             lastname: user.last_name,
@@ -282,14 +284,14 @@ function App() {
   const startFarming = async () => {
     if (user && !intervalRef.current) {
       try {
-        const response = await axios.get(`https://pokegram.games/rank/${user.rank}`);
+        const response = await axios.get(`http://localhost:5000/rank/${user.rank}`);
         if (response.data) {
           setRankBuff(response.data.rank_buff);
         }
         intervalRef.current = setInterval(() => {
           setFarm(prevFarm => {
             const newFarm = prevFarm + (user.farmSpeed * response.data.rank_buff / 60);
-            axios.post(`https://pokegram.games/user/${user.userId}/updateFarm`, { farm: newFarm });
+            axios.post(`http://localhost:5000/user/${user.userId}/updateFarm`, { farm: newFarm });
             return newFarm;
           });
         }, 1000);
@@ -313,7 +315,7 @@ function App() {
   const levelUp = async () => {
     try {
       const userId = user?.userId;
-      const response = await axios.post(`https://pokegram.games/user/${userId}/levelUp`);
+      const response = await axios.post(`http://localhost:5000/user/${userId}/levelUp`);
       message.success(`Bạn nâng cấp lên level ${user?.level + 1} thành công!`);
       fetchUser();
       hideLevelUp();
@@ -324,7 +326,7 @@ function App() {
   const logout = async () => {
     try {
       const userId = user.userId; // Thay thế bằng userId thực tế
-      const response = await axios.post(`https://pokegram.games/user/${userId}/logout`, { farm });
+      const response = await axios.post(`http://localhost:5000/user/${userId}/logout`, { farm });
       console.log('User logged out:', response.data);
       if (window.Telegram?.WebApp) {
         window.Telegram.WebApp.close();
@@ -377,7 +379,7 @@ function App() {
 
   const checkChannel = async (userId) => {
     try {
-      const response = await axios.post(`https://pokegram.games/quest/checkChannel/${userId}`, { timeout: 10000 });
+      const response = await axios.post(`http://localhost:5000/quest/checkChannel/${userId}`, { timeout: 10000 });
       return response.data.joinChannel;
     } catch (error) {
       console.error('Lỗi khi kiểm tra trạng thái thành viên kênh:', error);
@@ -387,7 +389,7 @@ function App() {
 
   const checkGroup = async (userId) => {
     try {
-      const response = await axios.post(`https://pokegram.games/quest/checkGroup/${userId}`, { timeout: 10000 });
+      const response = await axios.post(`http://localhost:5000/quest/checkGroup/${userId}`, { timeout: 10000 });
       return response.data.joinGroup;
     } catch (error) {
       console.error('Lỗi khi kiểm tra trạng thái thành viên nhóm:', error);
@@ -429,7 +431,7 @@ function App() {
   //Claim Join Quest
   const claimJoinQuest = async () => {
     const userId = user.userId;
-    const response = await axios.post(`https://pokegram.games/user/updateQuest/${userId}`);
+    const response = await axios.post(`http://localhost:5000/user/updateQuest/${userId}`);
     if (response.data.message == 1) {
       setClaimQ(false);
       message.success(`Bạn nhận thưởng thành công!`);
@@ -444,7 +446,7 @@ function App() {
     try {
       const userId = user.userId;
       const offlineCoin = user?.farmSpeed * rankBuff / 60 * (offlineTime - 10) * 0.7;
-      const response = await axios.post(`https://pokegram.games/user/${userId}/claimoffline`, { offlineCoin });
+      const response = await axios.post(`http://localhost:5000/user/${userId}/claimoffline`, { offlineCoin });
       updateData();
       hideOfflineMenu();
     } catch (error) {
@@ -455,7 +457,7 @@ function App() {
     try {
       const userId = user.userId;
       const offlineCoin = user?.farmSpeed * rankBuff / 60 * (offlineTime - 10);
-      const response = await axios.post(`https://pokegram.games/user/${userId}/claimoffline`, { offlineCoin });
+      const response = await axios.post(`http://localhost:5000/user/${userId}/claimoffline`, { offlineCoin });
       updateData();
       hideOfflineMenu();
     } catch (error) {
