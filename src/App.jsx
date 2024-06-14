@@ -58,7 +58,7 @@ function App() {
     const handleLogoutTime = async () => {
       const logoutTime = new Date().toISOString();
       try {
-        await axios.post(`http://localhost:5000/user/${userId}/logout`, { timeLogOut: logoutTime });
+        await axios.post(`https://pokegram.games/user/${userId}/logout`, { timeLogOut: logoutTime });
         console.log('Logout time saved:', logoutTime);
       } catch (error) {
         console.error('Error saving logout time:', error);
