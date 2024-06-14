@@ -38,10 +38,8 @@ function App() {
   const [offlineTime, setOfflineTime] = useState(null);
   useEffect(() => {
     const updateLoginTime = async () => {
-      const tg = window.Telegram?.WebApp;
-      const userId = tg.initDataUnsafe?.user.id;
       try {
-        const response = await axios.post(`https://pokegram.games/user/${userId}/login`);
+        const response = await axios.post(`https://pokegram.games/user/${user?.userId}/login`);
         const { timeLogIn, timeLogOut } = response.data;
 
         if (timeLogIn && timeLogOut) {
@@ -53,42 +51,23 @@ function App() {
       }
     };
 
-    updateLoginTime();
-  }, []);
-
-  const handleLogoutTime = () => {
-    const logoutTime = new Date().toISOString();
-    const tg = window.Telegram?.WebApp;
-    const userId = tg.initDataUnsafe?.user.id;
-    // Gửi thời gian rời khỏi trang đến backend
-    axios.post(`https://pokegram.games/user/${userId}/logout`, { timeLogOut: logoutTime })
-      .then(response => {
-        console.log('Logout time saved:', response.data);
-      })
-      .catch(error => {
+    const handleLogoutTime = async () => {
+      const logoutTime = new Date().toISOString();
+      try {
+        await axios.post(`https://pokegram.games/user/${user.userId}/logout`, { timeLogOut: logoutTime });
+      } catch (error) {
         console.error('Error saving logout time:', error);
-      });
-  };
-
-  useEffect(() => {
-    const handleBeforeUnload = (event) => {
-      handleLogoutTime();
-    };
-
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'hidden') {
-        handleLogoutTime();
       }
     };
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+    updateLoginTime();
+
+    window.addEventListener('beforeunload', handleLogoutTime);
 
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('beforeunload', handleLogoutTime);
     };
-  }, []);
+  }, [user?.userId]);
   const textAreaRef = useRef(null);
 
   const handleCopyClick = () => {
@@ -164,7 +143,18 @@ function App() {
   const claimShareCoin = async () => {
     const res = await axios.post(`https://pokegram.games/user/claimShareCoin/${user.userId}`)
     setTotalShareCoin(0);
-    updateUserData();
+    updateData();
+    setNextClaim(user.nextClaimTime);
+
+  }
+  const updateData = () => {
+    const tg = window.Telegram?.WebApp;
+    const userId = tg.initDataUnsafe?.user.id;
+    axios.get(`https://pokegram.games/user/${userId}`)
+      .then(
+        response => {
+          setUser(response?.data);
+        })
   }
   //Update UserData
   const updateUserData = () => {
@@ -434,7 +424,7 @@ function App() {
       const userId = user.userId;
       const offlineCoin = user?.farmSpeed * rankBuff / 60 * (offlineTime - 10) * 0.7;
       const response = await axios.post(`https://pokegram.games/user/${userId}/claimoffline`, { offlineCoin });
-      updateUserData();
+      updateData();
       hideOfflineMenu();
     } catch (error) {
       alert("Bạn chỉ được claim sau 6 tiêngs")
@@ -445,7 +435,7 @@ function App() {
       const userId = user.userId;
       const offlineCoin = user?.farmSpeed * rankBuff / 60 * (offlineTime - 10);
       const response = await axios.post(`https://pokegram.games/user/${userId}/claimoffline`, { offlineCoin });
-      updateUserData();
+      updateData();
       hideOfflineMenu();
     } catch (error) {
       alert("Bạn chỉ được claim sau 6 tiêngs")
