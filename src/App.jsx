@@ -552,6 +552,7 @@ function App() {
       ) : (
         <ConnectWalletButton setWalletAddress={setWalletAddress} />
       )}
+      <ConnectWalletButton/>
     </div>
 
   );
