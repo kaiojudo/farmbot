@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import './App.css'
+import ConnectWalletButton from './components/ConnectWalletButton';
+import WalletInfo from './components/WalletInfo';
+import './styles/App.css';
+import connector from './tonConnectConfig';
 import StartMenu from './components/StartMenu';
 import Quest from './components/Quest';
 import FarmField from './components/FarmField';
@@ -36,6 +39,22 @@ function App() {
   const [showOffline, setShowOffline] = useState(true);
 
   const [offlineTime, setOfflineTime] = useState(null);
+  const [walletAddress, setWalletAddress] = useState(null);
+
+  useEffect(() => {
+    const checkConnection = async () => {
+      const wallets = await connector.getWallets();
+
+      if (wallets.length > 0) {
+        const address = localStorage.getItem('tonWalletAddress');
+        if (address) {
+          setWalletAddress(address);
+        }
+      }
+    };
+
+    checkConnection();
+  }, []);
   const tg = window.Telegram.WebApp;
   const userId = tg.initDataUnsafe?.user.id;
   //logout
@@ -527,6 +546,12 @@ function App() {
           hideOfflineMenu={hideOfflineMenu}
         />}
       <button onClick={handleLogoutTime}></button>
+      <h1>Welcome to the Telegram Mini App</h1>
+      {walletAddress ? (
+        <WalletInfo walletAddress={walletAddress} />
+      ) : (
+        <ConnectWalletButton setWalletAddress={setWalletAddress} />
+      )}
     </div>
 
   );
