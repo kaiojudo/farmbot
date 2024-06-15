@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import ConnectWalletButton from './components/ConnectWalletButton';
 import WalletInfo from './components/WalletInfo';
-import './styles/App.css';
+import './App.css';
 import connector from './tonConnectConfig';
 import StartMenu from './components/StartMenu';
 import Quest from './components/Quest';
