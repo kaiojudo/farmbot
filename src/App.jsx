@@ -60,7 +60,7 @@ function App() {
   //logout
 
   useEffect(() => {
-    const ws = new WebSocket('wss://pokegram.games/websocket');
+    const ws = new WebSocket('wss://websocket.pokegram.games');
 
     ws.onopen = () => {
       console.log('Connected to WebSocket server');
