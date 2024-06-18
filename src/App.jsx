@@ -484,7 +484,7 @@ function App() {
   const claimOffline = async () => {
     try {
       const userId = user.userId;
-      const offlineCoin = 0;
+      let offlineCoin = 0;
       if (user.totalOfflineTime < 40) {
         offlineCoin = user?.farmSpeed * rankBuff / 60 * user.totalOfflineTime * 0.7;
       }
