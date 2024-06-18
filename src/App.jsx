@@ -58,7 +58,7 @@ function App() {
   const tg = window.Telegram.WebApp;
   const userId = tg.initDataUnsafe?.user.id;
   const textAreaRef = useRef(null);
-
+  
   //Websocket
   useEffect(() => {
     const ws = new WebSocket('wss://websocket.pokegram.games');
@@ -73,12 +73,7 @@ function App() {
           const response = await axios.post(`https://pokegram.games/user/${userId}/login`);
           console.log('Login time updated:', response.data.timeLogIn);
           if (response.data.offlineTime !== null) {
-            if (response.data.offlineTime >= 40) {
-              setOfflineTime(40);
-            }
-            else {
-              setOfflineTime(response.data.offlineTime);
-            }
+            setOfflineTime(response.data.offlineTime);
           }
         } catch (error) {
           console.error('Error updating login time:', error);
