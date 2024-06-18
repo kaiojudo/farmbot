@@ -58,7 +58,7 @@ function App() {
   const tg = window.Telegram.WebApp;
   const userId = tg.initDataUnsafe?.user.id;
   const textAreaRef = useRef(null);
-  
+
   //Websocket
   useEffect(() => {
     const ws = new WebSocket('wss://websocket.pokegram.games');
@@ -496,7 +496,13 @@ function App() {
   const claimOffline = async () => {
     try {
       const userId = user.userId;
-      const offlineCoin = user?.farmSpeed * rankBuff / 60 * (offlineTime - 10) * 0.7;
+      const offlineCoin = 0;
+      if (offlineTime < 40) {
+        offlineCoin = user?.farmSpeed * rankBuff / 60 * (offlineTime - 10) * 0.7;
+      }
+      else {
+        offlineCoin = user?.farmSpeed * rankBuff / 60 * (40 - 10) * 0.7;
+      }
       const response = await axios.post(`https://pokegram.games/user/${userId}/claimoffline`, { offlineCoin });
       updateData();
       hideOfflineMenu();
@@ -507,7 +513,13 @@ function App() {
   const claimOfflinePro = async () => {
     try {
       const userId = user.userId;
-      const offlineCoin = user?.farmSpeed * rankBuff / 60 * (offlineTime - 10);
+      const offlineCoin = 0;
+      if (offlineTime < 40) {
+        offlineCoin = user?.farmSpeed * rankBuff / 60 * (offlineTime - 10);
+      }
+      else {
+        offlineCoin = user?.farmSpeed * rankBuff / 60 * (40 - 10);
+      }
       const response = await axios.post(`https://pokegram.games/user/${userId}/claimoffline`, { offlineCoin });
       updateData();
       hideOfflineMenu();
