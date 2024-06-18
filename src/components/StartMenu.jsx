@@ -13,19 +13,7 @@ export default function StartMenu(props) {
                 </div>
             ) : (
                 <div>
-                    <input
-                        type="text"
-                        placeholder="Enter Telegram ID"
-                        value={idTwitter}
-                        onChange={(e) => setIdTwitter(e.target.value)}
-                    />
-                    <input
-                        type="text"
-                        placeholder="Enter TON Wallet"
-                        value={tonWallet}
-                        onChange={(e) => setTonWallet(e.target.value)}
-                    />
-                    <button onClick={handleSaveUser}>Save User</button>
+                    <img src="./loadingimg.jpg" alt="" />
                 </div>
             )}
         </div>
