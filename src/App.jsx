@@ -75,7 +75,6 @@ function App() {
           console.log('Login time updated:', response.data.timeLogIn);
           if (response.data.offlineTime !== null) {
             setOfflineTime(response.data.offlineTime);
-            setTotalOfflineTime(response.data.offlineTime + user?.totalOfflineTime);
           }
         } catch (error) {
           console.error('Error updating login time:', error);
@@ -164,6 +163,21 @@ function App() {
           setUser(response?.data);
           setFarm(response?.data.farm);
           const userData = response?.data;
+          if (userData.rank == 1) {
+            setRankBuff(1);
+          }
+          if (userData.rank == 2) {
+            setRankBuff(1.1);
+          }
+          if (userData.rank == 3) {
+            setRankBuff(1.3);
+          }
+          if (userData.rank == 4) {
+            setRankBuff(1.5);
+          }
+          if (userData.rank == 5) {
+            setRankBuff(2);
+          }
           if (userData.lastClaimTime) {
             const lastClaimTime = new Date(userData.lastClaimTime);
             const nextClaimTime = new Date(lastClaimTime.getTime() + 6 * 60 * 60 * 1000); // Cộng thêm 6 tiếng
@@ -324,24 +338,29 @@ function App() {
   }
   const startFarming = async () => {
     if (user && !intervalRef.current) {
-      try {
-        const response = await axios.get(`https://pokegram.games/rank/${user.rank}`);
-        if (response.data) {
-          setRankBuff(response.data.rank_buff);
+      const maxFarm = (user?.farmSpeed * rankBuff * 60 * 4)
+      console.log(maxFarm);
+      if (user.farm <= maxFarm) {
+        try {
+          const response = await axios.get(`https://pokegram.games/rank/${user.rank}`);
+          if (response.data) {
+            setRankBuff(response.data.rank_buff);
+          }
+          intervalRef.current = setInterval(() => {
+            setFarm(prevFarm => {
+              const newFarm = prevFarm + (user.farmSpeed * response.data.rank_buff / 60);
+              // axios.post(`https://pokegram.games/user/${user.userId}/updateFarm`, { farm: newFarm });
+              return newFarm;
+            });
+          }, 1000);
+        } catch (error) {
+          console.error('Failed to fetch rank:', error);
         }
-        intervalRef.current = setInterval(() => {
-          setFarm(prevFarm => {
-            const newFarm = prevFarm + (user.farmSpeed * response.data.rank_buff / 60);
-            axios.post(`https://pokegram.games/user/${user.userId}/updateFarm`, { farm: newFarm });
-            return newFarm;
-          });
-        }, 1000);
-      } catch (error) {
-        console.error('Failed to fetch rank:', error);
       }
     }
   };
   //
+  // console.log(offlineTime + user?.totalOfflineTime);
   useEffect(() => {
     startFarming();
     // Xóa bỏ interval khi component được unmount hoặc khi user thay đổi
@@ -352,7 +371,6 @@ function App() {
       }
     };
   }, [user]);
-
   const levelUp = async () => {
     try {
       const userId = user?.userId;
@@ -503,7 +521,7 @@ function App() {
   const claimOfflinePro = async () => {
     try {
       const userId = user.userId;
-      const offlineCoin = 0;
+      let offlineCoin = 0;
       if (user.totalOfflineTime < 40) {
         offlineCoin = user?.farmSpeed * rankBuff / 60 * user.totalOfflineTime * 1.6;
       }
@@ -571,7 +589,7 @@ function App() {
         Close WebApp
       </button>
       <CopyText />
-      {offlineTime > 10 && showOffline &&
+      {(user?.totalOfflineTime + offlineTime > 10 && showOffline) &&
         <Offline
           user={user}
           rankBuff={rankBuff}
@@ -579,7 +597,6 @@ function App() {
           claimOffline={claimOffline}
           claimOfflinePro={claimOfflinePro}
           hideOfflineMenu={hideOfflineMenu}
-          totalOfflineTime={totalOfflineTime}
         />}
       <h1>Welcome to the Telegram Mini App</h1>
       {walletAddress ? (
@@ -587,6 +604,7 @@ function App() {
       ) : (
         <ConnectWalletButton setWalletAddress={setWalletAddress} />
       )}
+
     </div>
 
   );
