@@ -506,7 +506,6 @@ function App() {
   return (
 
     <div className="App">
-      <WebSocketComponent />
       <StartMenu
         user={user}
         handleSaveUser={handleSaveUser}
