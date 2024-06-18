@@ -495,7 +495,7 @@ function App() {
       updateData();
       hideOfflineMenu();
     } catch (error) {
-      alert("Bạn chỉ được claim sau 6 tiêngs")
+      console.log(error);
     }
   }
   const claimOfflinePro = async () => {
