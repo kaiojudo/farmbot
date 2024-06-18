@@ -73,7 +73,12 @@ function App() {
           const response = await axios.post(`https://pokegram.games/user/${userId}/login`);
           console.log('Login time updated:', response.data.timeLogIn);
           if (response.data.offlineTime !== null) {
-            setOfflineTime(response.data.offlineTime);
+            if (response.data.offlineTime >= 40) {
+              setOfflineTime(40);
+            }
+            else {
+              setOfflineTime(response.data.offlineTime);
+            }
           }
         } catch (error) {
           console.error('Error updating login time:', error);
