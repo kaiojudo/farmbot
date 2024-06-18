@@ -57,8 +57,9 @@ function App() {
   }, []);
   const tg = window.Telegram.WebApp;
   const userId = tg.initDataUnsafe?.user.id;
-  //logout
+  const textAreaRef = useRef(null);
 
+  //Websocket
   useEffect(() => {
     const ws = new WebSocket('wss://websocket.pokegram.games');
 
@@ -83,23 +84,40 @@ function App() {
 
     ws.onclose = () => {
       console.log('Disconnected from WebSocket server');
+      ws.send(JSON.stringify({ type: 'logout', userId }));
+    };
+
+    ws.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      console.log('Message from server:', message);
+      // Xử lý các tin nhắn từ server (cập nhật trạng thái người dùng, vv.)
     };
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'hidden') {
+        ws.send(JSON.stringify({ type: 'logout', userId }));
         ws.close();
+      } else if (document.visibilityState === 'visible') {
+        const newWs = new WebSocket('wss://websocket.pokegram.games');
+        newWs.onopen = () => {
+          console.log('Reconnected to WebSocket server');
+          newWs.send(JSON.stringify({ type: 'login', userId }));
+        };
+        newWs.onclose = ws.onclose;
+        newWs.onmessage = ws.onmessage;
       }
     };
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
+      ws.send(JSON.stringify({ type: 'logout', userId }));
       ws.close();
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [userId]);
+  }, [userId, setOfflineTime]);
 
-  const textAreaRef = useRef(null);
+
 
   const handleCopyClick = () => {
     if (textAreaRef.current) {
@@ -488,6 +506,7 @@ function App() {
   return (
 
     <div className="App">
+      <WebSocketComponent />
       <StartMenu
         user={user}
         handleSaveUser={handleSaveUser}
