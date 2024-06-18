@@ -505,8 +505,8 @@ function App() {
     try {
       const userId = user.userId;
       let offlineCoin = 0;
-      if (user.totalOfflineTime < 40) {
-        offlineCoin = user?.farmSpeed * rankBuff / 60 * user.totalOfflineTime * 0.7;
+      if (offlineTime + user.totalOfflineTime < 40) {
+        offlineCoin = user?.farmSpeed * rankBuff / 60 * (offlineTime + user.totalOfflineTime) * 0.7;
       }
       else {
         offlineCoin = user?.farmSpeed * rankBuff / 60 * 40 * 0.7;
