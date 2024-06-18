@@ -2,9 +2,9 @@ import React from 'react'
 
 export default function Offline(props) {
     const {
-        user, rankBuff, offlineTime, claimOffline, claimOfflinePro, hideOfflineMenu,totalOfflineTime
+        user, rankBuff, offlineTime, claimOffline, claimOfflinePro, hideOfflineMenu, totalOfflineTime
     } = props
-    // console.log(user);
+    console.log(totalOfflineTime);
     return (
         <div className='offline'>
             <h1>Offline</h1>
