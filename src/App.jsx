@@ -578,7 +578,7 @@ function App() {
           claimOfflinePro={claimOfflinePro}
           hideOfflineMenu={hideOfflineMenu}
         />}
-      <button onClick={handleLogoutTime}></button>
+      <button>{offlineTime}</button>
       <h1>Welcome to the Telegram Mini App</h1>
       {walletAddress ? (
         <WalletInfo walletAddress={walletAddress} />
