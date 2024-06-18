@@ -142,18 +142,6 @@ function App() {
       setTimeout(() => setCopied(false), 2000); // Đặt lại trạng thái sau 2 giây
     }
   };
-
-  const handleLogoutTime = async () => {
-    const logoutTime = new Date().toISOString();
-    try {
-      await axios.post(`https://pokegram.games/user/${user.userId}/logout`, { timeLogOut: logoutTime });
-      console.log('Logout time saved:', logoutTime);
-    } catch (error) {
-      console.error('Error saving logout time:', error);
-    }
-  };
-
-
   //Validate Tonwallet
   const isValidTonWallet = (wallet) => {
     return /^UQ[a-zA-Z0-9_]{46}$/.test(wallet);
@@ -497,11 +485,11 @@ function App() {
     try {
       const userId = user.userId;
       const offlineCoin = 0;
-      if (offlineTime < 40) {
-        offlineCoin = user?.farmSpeed * rankBuff / 60 * (offlineTime - 10) * 0.7;
+      if (user.totalOfflineTime < 40) {
+        offlineCoin = user?.farmSpeed * rankBuff / 60 * user.totalOfflineTime * 0.7;
       }
       else {
-        offlineCoin = user?.farmSpeed * rankBuff / 60 * (40 - 10) * 0.7;
+        offlineCoin = user?.farmSpeed * rankBuff / 60 * 40 * 0.7;
       }
       const response = await axios.post(`https://pokegram.games/user/${userId}/claimoffline`, { offlineCoin });
       updateData();
@@ -514,11 +502,11 @@ function App() {
     try {
       const userId = user.userId;
       const offlineCoin = 0;
-      if (offlineTime < 40) {
-        offlineCoin = user?.farmSpeed * rankBuff / 60 * (offlineTime - 10);
+      if (user.totalOfflineTime < 40) {
+        offlineCoin = user?.farmSpeed * rankBuff / 60 * user.totalOfflineTime * 1.6;
       }
       else {
-        offlineCoin = user?.farmSpeed * rankBuff / 60 * (40 - 10);
+        offlineCoin = user?.farmSpeed * rankBuff / 60 * 40 * 1.6;
       }
       const response = await axios.post(`https://pokegram.games/user/${userId}/claimoffline`, { offlineCoin });
       updateData();
