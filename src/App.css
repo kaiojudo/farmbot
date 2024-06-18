@@ -104,3 +104,6 @@ button:focus-visible {
 .claim-button button{
     margin: 5px;
 }
+.loading img{
+    width: 100%;
+}

@@ -12,7 +12,7 @@ export default function StartMenu(props) {
                     <p>{(user.coin).toFixed(4)}</p>
                 </div>
             ) : (
-                <div>
+                <div className='loading'>
                     <img src="./loadingimg.jpg" alt="" />
                 </div>
             )}
