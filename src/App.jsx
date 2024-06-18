@@ -40,6 +40,7 @@ function App() {
 
   const [offlineTime, setOfflineTime] = useState(null);
   const [walletAddress, setWalletAddress] = useState(null);
+  const [totalOfflineTime, setTotalOfflineTime] = useState(0);
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -74,6 +75,7 @@ function App() {
           console.log('Login time updated:', response.data.timeLogIn);
           if (response.data.offlineTime !== null) {
             setOfflineTime(response.data.offlineTime);
+            setTotalOfflineTime(response.data.offlineTime + user?.totalOfflineTime);
           }
         } catch (error) {
           console.error('Error updating login time:', error);
@@ -577,6 +579,7 @@ function App() {
           claimOffline={claimOffline}
           claimOfflinePro={claimOfflinePro}
           hideOfflineMenu={hideOfflineMenu}
+          totalOfflineTime={totalOfflineTime}
         />}
       <h1>Welcome to the Telegram Mini App</h1>
       {walletAddress ? (
