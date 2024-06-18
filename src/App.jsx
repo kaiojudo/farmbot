@@ -84,7 +84,17 @@ function App() {
 
     ws.onclose = () => {
       console.log('Disconnected from WebSocket server');
-      ws.send(JSON.stringify({ type: 'logout', userId }));
+      // Gửi yêu cầu đăng xuất khi WebSocket disconnect
+      const logout = async () => {
+        try {
+          const now = new Date().toISOString();
+          await axios.post(`https://pokegram.games/user/${userId}/logout`, { timeLogOut: now });
+          console.log('Logout time saved successfully');
+        } catch (error) {
+          console.error('Error saving logout time:', error);
+        }
+      };
+      logout();
     };
 
     ws.onmessage = (event) => {
