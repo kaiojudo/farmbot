@@ -150,6 +150,8 @@ function App() {
           setUser(response?.data);
           setFarm(response?.data.farm);
           const userData = response?.data;
+          farmTime = (new Date(userData.timeLogIn) - new Date(userData.timeLogOut)) / 1000;
+          console.log(farmTime);
           if (userData.rank == 1) {
             setRankBuff(1);
           }
