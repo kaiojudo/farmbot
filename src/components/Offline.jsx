@@ -4,7 +4,7 @@ export default function Offline(props) {
     const {
         user, rankBuff, offlineTime, claimOffline, claimOfflinePro, hideOfflineMenu
     } = props
-    console.log(rankBuff);
+    // console.log(rankBuff);
     return (
         <div className='offline'>
             <h1>Offline</h1>

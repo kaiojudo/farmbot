@@ -107,3 +107,6 @@ button:focus-visible {
 .loading img{
     width: 100%;
 }
+.alertFull{
+    color: red;
+}

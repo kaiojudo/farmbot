@@ -52,7 +52,7 @@ export default function ShowLevelUp(props) {
 
             </div>
             <div>
-                <button onClick={levelUp}>Accept</button>
+                <button onClick={levelUp} className='btn-accept'>Accept</button>
                 <button className='btn-close' onClick={hideLevelUp}>X</button>
             </div>
         </div>

@@ -40,7 +40,7 @@ function App() {
 
   const [offlineTime, setOfflineTime] = useState(null);
   const [walletAddress, setWalletAddress] = useState(null);
-  const [totalOfflineTime, setTotalOfflineTime] = useState(0);
+  const [alertMax, setAlertMax] = useState(false);
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -85,11 +85,7 @@ function App() {
 
     ws.onclose = () => {
       console.log('Disconnected from WebSocket server');
-      const message = JSON.stringify({
-        type: 'logout',
-        userId: userId,
-        farm: farm,
-      });
+
 
       // Gửi thông điệp logout chứa dữ liệu farm
       ws.send(message);
@@ -102,7 +98,7 @@ function App() {
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'hidden') {
-        ws.send(JSON.stringify({ type: 'logout', userId, farm }));
+        ws.send(JSON.stringify({ type: 'logout', userId }));
         ws.close();
       } else if (document.visibilityState === 'visible') {
         const newWs = new WebSocket('wss://websocket.pokegram.games');
@@ -118,7 +114,7 @@ function App() {
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
-      ws.send(JSON.stringify({ type: 'logout', userId, farm }));
+      ws.send(JSON.stringify({ type: 'logout', userId }));
       ws.close();
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
@@ -276,6 +272,7 @@ function App() {
       setFarm(0);
       startFarming();
       updateUserData();
+      setAlertMax(false);
     } catch (error) {
       alert("Bạn chỉ được claim sau 6 tiêngs")
     }
@@ -331,23 +328,30 @@ function App() {
     if (user && !intervalRef.current) {
       const maxFarm = (user?.farmSpeed * rankBuff * 60 * 4)
       console.log(maxFarm);
-      if (user.farm <= maxFarm) {
-        try {
-          const response = await axios.get(`https://pokegram.games/rank/${user.rank}`);
-          if (response.data) {
-            setRankBuff(response.data.rank_buff);
-          }
-          intervalRef.current = setInterval(() => {
-            setFarm(prevFarm => {
-              const newFarm = prevFarm + (user.farmSpeed * response.data.rank_buff / 60);
-              // axios.post(`https://pokegram.games/user/${user.userId}/updateFarm`, { farm: newFarm });
-              return newFarm;
-            });
-          }, 1000);
-        } catch (error) {
-          console.error('Failed to fetch rank:', error);
+      try {
+        const response = await axios.get(`https://pokegram.games/rank/${user.rank}`);
+        if (response.data) {
+          setRankBuff(response.data.rank_buff);
         }
+        intervalRef.current = setInterval(() => {
+
+          setFarm(prevFarm => {
+            const newFarm = prevFarm + (user.farmSpeed * response.data.rank_buff / 60);
+            if (newFarm < maxFarm) {
+              axios.post(`https://pokegram.games/user/${user.userId}/updateFarm`, { farm: newFarm });
+              return newFarm;
+            }
+            else {
+              setAlertMax(true);
+              return maxFarm;
+
+            }
+          });
+        }, 1000);
+      } catch (error) {
+        console.error('Failed to fetch rank:', error);
       }
+
     }
   };
   //
@@ -366,9 +370,15 @@ function App() {
     try {
       const userId = user?.userId;
       const response = await axios.post(`https://pokegram.games/user/${userId}/levelUp`);
-      message.success(`Bạn nâng cấp lên level ${user?.level + 1} thành công!`);
-      fetchUser();
-      hideLevelUp();
+      if (response.data != 0) {
+        message.success(`Bạn nâng cấp lên level ${user?.level + 1} thành công!`);
+        fetchUser();
+        hideLevelUp();
+      }
+      else {
+        alert("Not Enough Money")
+      }
+
     } catch (error) {
       console.error('Failed to level up:', error);
     }
@@ -570,6 +580,7 @@ function App() {
           copied={copied}
           totalShareCoin={totalShareCoin}
           claimShareCoin={claimShareCoin}
+          alertMax={alertMax}
         />}
       {showMenuLevelUp && <ShowLevelUp
         user={user}

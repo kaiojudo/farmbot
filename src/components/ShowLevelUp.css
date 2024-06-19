@@ -5,6 +5,7 @@
     width: 100%;
     top: 0;
     height: 40vh;
+    left: 0;
 }
 
 .level-up {
@@ -17,13 +18,20 @@
     text-align: left;
     display: flex;
     margin-top: 40px;
-
+    margin-left: 10px;
 }
-
+.btn-accept{
+    margin-left: 10px;
+    padding: 5px 10px;
+    font-weight: bolder;
+    color: black;
+    background-color: aqua;
+}
 .slu-title {
     width: 30%;
 }
-.btn-close{
+
+.btn-close {
     background-color: red;
     color: white;
     text-transform: uppercase;
