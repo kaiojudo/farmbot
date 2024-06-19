@@ -336,7 +336,7 @@ function App() {
       try {
         const response = await axios.get(`https://pokegram.games/rank/${user.rank}`);
         if (response.data) {
-          setrankBuff / 60(response.data.rank_buff);
+          setrankBuff(response.data.rank_buff);
         }
         intervalRef.current = setInterval(() => {
 
