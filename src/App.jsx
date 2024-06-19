@@ -75,7 +75,6 @@ function App() {
           console.log('Login time updated:', response.data.timeLogIn);
           if (response.data.offlineTime !== null) {
             setOfflineTime(response.data.offlineTime);
-            setTotalFarmTime(response.data.farmTime);
           }
         } catch (error) {
           console.error('Error updating login time:', error);
@@ -153,23 +152,23 @@ function App() {
           const userData = response?.data;
           if (userData.rank == 1) {
             setrankBuff(1);
-            setFarm(response.data.farm * response.data.farmSpeed * rankBuff / 60)
+            setFarm(userData.farm * response.data.farmSpeed * rankBuff / 60)
           }
           if (userData.rank == 2) {
             setrankBuff(1.1);
-            setFarm(response.data.farm * response.data.farmSpeed * rankBuff / 60)
+            setFarm(userData.farm * response.data.farmSpeed * rankBuff / 60)
           }
           if (userData.rank == 3) {
             setrankBuff(1.3);
-            setFarm(response.data.farm * response.data.farmSpeed * rankBuff / 60)
+            setFarm(userData.farm * response.data.farmSpeed * rankBuff / 60)
           }
           if (userData.rank == 4) {
             setrankBuff(1.5);
-            setFarm(response.data.farm * response.data.farmSpeed * rankBuff / 60)
+            setFarm(userData.farm * response.data.farmSpeed * rankBuff / 60)
           }
           if (userData.rank == 5) {
             setrankBuff(2);
-            setFarm(response.data.farm * response.data.farmSpeed * rankBuff / 60)
+            setFarm(userData.farm * response.data.farmSpeed * rankBuff / 60)
           }
           if (userData.lastClaimTime) {
             const lastClaimTime = new Date(userData.lastClaimTime);
