@@ -30,7 +30,7 @@ wss.on('connection', function connection(ws) {
 
   ws.on('message', async function incoming(message) {
     const parsedMessage = JSON.parse(message);
-    const { type, userId: receivedUserId } = parsedMessage;
+    const { type, userId: receivedUserId, farm } = parsedMessage;
 
     userId = receivedUserId; // Lưu userId để sử dụng khi kết nối đóng
 

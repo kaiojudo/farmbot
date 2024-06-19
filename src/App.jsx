@@ -90,12 +90,10 @@ function App() {
         userId: userId, 
         farm: farm,
       });
-
+      
       // Gửi thông điệp logout chứa dữ liệu farm
       ws.send(message);
     };
-
-
     ws.onmessage = (event) => {
       const message = JSON.parse(event.data);
       console.log('Message from server:', message);
@@ -104,7 +102,7 @@ function App() {
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'hidden') {
-        ws.send(JSON.stringify({ type: 'logout', userId }));
+        ws.send(JSON.stringify({ type: 'logout', userId, farm }));
         ws.close();
       } else if (document.visibilityState === 'visible') {
         const newWs = new WebSocket('wss://websocket.pokegram.games');
