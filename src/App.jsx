@@ -340,7 +340,7 @@ function App() {
             const newFarm = prevFarm + (user.farmSpeed * response.data.rank_buff / 60);
             if (newFarm < maxFarm) {
               setAlertMax(false)
-              axios.post(`https://pokegram.games/user/${user.userId}/updateFarm`, { farm: newFarm });
+              // axios.post(`https://pokegram.games/user/${user.userId}/updateFarm`, { farm: newFarm });
               return newFarm;
             }
             else {
