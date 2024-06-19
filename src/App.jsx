@@ -87,10 +87,10 @@ function App() {
       console.log('Disconnected from WebSocket server');
       const message = JSON.stringify({
         type: 'logout',
-        userId: userId, 
+        userId: userId,
         farm: farm,
       });
-      
+
       // Gửi thông điệp logout chứa dữ liệu farm
       ws.send(message);
     };
@@ -118,7 +118,7 @@ function App() {
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
-      ws.send(JSON.stringify({ type: 'logout', userId }));
+      ws.send(JSON.stringify({ type: 'logout', userId, farm }));
       ws.close();
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
