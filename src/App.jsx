@@ -37,10 +37,10 @@ function App() {
   const [totalShareCoin, setTotalShareCoin] = useState(0);
   const [rankBuff, setRankBuff] = useState(0);
   const [showOffline, setShowOffline] = useState(true);
-
   const [offlineTime, setOfflineTime] = useState(null);
   const [walletAddress, setWalletAddress] = useState(null);
   const [alertMax, setAlertMax] = useState(false);
+  const [totalFarmTime, setTotalFarmTime] = useState();
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -75,7 +75,7 @@ function App() {
           console.log('Login time updated:', response.data.timeLogIn);
           if (response.data.offlineTime !== null) {
             setOfflineTime(response.data.offlineTime);
-            setFarm(response.data.farmTime * rankBuff * user?.farmSpeed);
+            setTotalFarmTime(response.data.farmTime);
           }
         } catch (error) {
           console.error('Error updating login time:', error);
@@ -141,7 +141,7 @@ function App() {
     setInviteBy(urlParams.toString().split('=')[1]);
     fetchUser();
     // loginUser();
-  }, [])
+  }, [totalFarmTime])
   const fetchUser = () => {
     const tg = window.Telegram?.WebApp;
     const userId = tg.initDataUnsafe?.user.id;
@@ -149,28 +149,34 @@ function App() {
       .then(
         response => {
           setUser(response?.data);
+
           const userData = response?.data;
           if (userData.rank == 1) {
             setRankBuff(1);
+            setFarm(totalFarmTime * response.data.farmSpeed * rankBuff)
           }
           if (userData.rank == 2) {
             setRankBuff(1.1);
+            setFarm(totalFarmTime * response.data.farmSpeed * rankBuff)
           }
           if (userData.rank == 3) {
             setRankBuff(1.3);
+            setFarm(totalFarmTime * response.data.farmSpeed * rankBuff)
           }
           if (userData.rank == 4) {
             setRankBuff(1.5);
+            setFarm(totalFarmTime * response.data.farmSpeed * rankBuff)
           }
           if (userData.rank == 5) {
             setRankBuff(2);
+            setFarm(totalFarmTime * response.data.farmSpeed * rankBuff)
           }
           if (userData.lastClaimTime) {
             const lastClaimTime = new Date(userData.lastClaimTime);
             const nextClaimTime = new Date(lastClaimTime.getTime() + 6 * 60 * 60 * 1000); // Cộng thêm 6 tiếng
             setNextClaim(nextClaimTime);
           }
-
+          
           const fetchInvitedUsers = async () => {
             try {
               const res = await axios.get(`https://pokegram.games/inviteUser/search/${response?.data.userId}`);
