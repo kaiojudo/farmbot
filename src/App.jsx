@@ -152,23 +152,23 @@ function App() {
 
           const userData = response?.data;
           if (userData.rank == 1) {
-            setrankBuff / 60(1);
+            setrankBuff(1);
             setFarm(response.data.farm * response.data.farmSpeed * rankBuff / 60)
           }
           if (userData.rank == 2) {
-            setrankBuff / 60(1.1);
+            setrankBuff(1.1);
             setFarm(response.data.farm * response.data.farmSpeed * rankBuff / 60)
           }
           if (userData.rank == 3) {
-            setrankBuff / 60(1.3);
+            setrankBuff(1.3);
             setFarm(response.data.farm * response.data.farmSpeed * rankBuff / 60)
           }
           if (userData.rank == 4) {
-            setrankBuff / 60(1.5);
+            setrankBuff(1.5);
             setFarm(response.data.farm * response.data.farmSpeed * rankBuff / 60)
           }
           if (userData.rank == 5) {
-            setrankBuff / 60(2);
+            setrankBuff(2);
             setFarm(response.data.farm * response.data.farmSpeed * rankBuff / 60)
           }
           if (userData.lastClaimTime) {
@@ -601,10 +601,10 @@ function App() {
         <Offline
           user={user}
           rankBuff={rankBuff}
-      offlineTime={offlineTime}
-      claimOffline={claimOffline}
-      claimOfflinePro={claimOfflinePro}
-      hideOfflineMenu={hideOfflineMenu}
+          offlineTime={offlineTime}
+          claimOffline={claimOffline}
+          claimOfflinePro={claimOfflinePro}
+          hideOfflineMenu={hideOfflineMenu}
         />}
       <h1>Welcome to the Telegram Mini App</h1>
       {walletAddress ? (
