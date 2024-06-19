@@ -42,6 +42,7 @@ function App() {
   const [walletAddress, setWalletAddress] = useState(null);
   const [alertMax, setAlertMax] = useState(false);
 
+
   useEffect(() => {
     const checkConnection = async () => {
       const wallets = await connector.getWallets();
@@ -75,6 +76,7 @@ function App() {
           console.log('Login time updated:', response.data.timeLogIn);
           if (response.data.offlineTime !== null) {
             setOfflineTime(response.data.offlineTime);
+
           }
         } catch (error) {
           console.error('Error updating login time:', error);
@@ -148,10 +150,7 @@ function App() {
       .then(
         response => {
           setUser(response?.data);
-          setFarm(response?.data.farm);
           const userData = response?.data;
-          farmTime = (new Date(userData.timeLogIn) - new Date(userData.timeLogOut)) / 1000;
-          console.log(farmTime);
           if (userData.rank == 1) {
             setRankBuff(1);
           }
@@ -340,6 +339,7 @@ function App() {
           setFarm(prevFarm => {
             const newFarm = prevFarm + (user.farmSpeed * response.data.rank_buff / 60);
             if (newFarm < maxFarm) {
+              setAlertMax(false)
               axios.post(`https://pokegram.games/user/${user.userId}/updateFarm`, { farm: newFarm });
               return newFarm;
             }
