@@ -40,7 +40,6 @@ function App() {
   const [offlineTime, setOfflineTime] = useState(null);
   const [walletAddress, setWalletAddress] = useState(null);
   const [alertMax, setAlertMax] = useState(false);
-  const [totalFarmTime, setTotalFarmTime] = useState();
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -75,6 +74,30 @@ function App() {
           console.log('Login time updated:', response.data.timeLogIn);
           if (response.data.offlineTime !== null) {
             setOfflineTime(response.data.offlineTime);
+            const userData = response.data.user;
+            setUser(userData);
+            console.log(userData);
+            if (userData.rank == 1) {
+              setFarm(userData.farm * userData.farmSpeed * 1 / 60)
+              console.log(farm);
+            }
+            if (userData.rank == 2) {
+              setrankBuff(1.1);
+              setFarm(userData.farm * userData.farmSpeed * 1.1 / 60)
+            }
+            if (userData.rank == 3) {
+              setrankBuff(1.3);
+              setFarm(userData.farm * userData.farmSpeed * 1.3 / 60)
+            }
+            if (userData.rank == 4) {
+              setrankBuff(1.5);
+              setFarm(userData.farm * userData.farmSpeed * 1.5 / 60)
+            }
+            if (userData.rank == 5) {
+              setrankBuff(2);
+              setFarm(userData.farm * userData.farmSpeed * 2 / 60)
+            }
+
           }
         } catch (error) {
           console.error('Error updating login time:', error);
@@ -148,27 +171,6 @@ function App() {
         response => {
           setUser(response?.data);
           const userData = response?.data;
-          if (userData.rank == 1) {
-            setrankBuff(1);
-            setFarm(userData.farm * response.data.farmSpeed * rankBuff / 60)
-          }
-          if (userData.rank == 2) {
-            setrankBuff(1.1);
-            setFarm(userData.farm * response.data.farmSpeed * rankBuff / 60)
-          }
-          if (userData.rank == 3) {
-            setrankBuff(1.3);
-            setFarm(userData.farm * response.data.farmSpeed * rankBuff / 60)
-          }
-          if (userData.rank == 4) {
-            setrankBuff(1.5);
-            setFarm(userData.farm * response.data.farmSpeed * rankBuff / 60)
-          }
-          if (userData.rank == 5) {
-            setrankBuff(2);
-            setFarm(userData.farm * response.data.farmSpeed * rankBuff / 60)
-          }
-          console.log(farm);
           if (userData.lastClaimTime) {
             const lastClaimTime = new Date(userData.lastClaimTime);
             const nextClaimTime = new Date(lastClaimTime.getTime() + 6 * 60 * 60 * 1000); // Cộng thêm 6 tiếng
@@ -327,10 +329,11 @@ function App() {
   const showMenuQuest = () => {
     setQuest(!quest);
   }
+  console.log(farm);
   const startFarming = async () => {
     if (user && !intervalRef.current) {
       const maxFarm = (user?.farmSpeed * rankBuff * 60 * 4)
-      // console.log(maxFarm);
+      console.log(maxFarm);
       try {
         const response = await axios.get(`https://pokegram.games/rank/${user.rank}`);
         if (response.data) {
@@ -342,14 +345,13 @@ function App() {
             const newFarm = prevFarm + (user.farmSpeed * response.data.rank_buff / 60);
             if (newFarm < maxFarm) {
               setAlertMax(false)
-              // axios.post(`https://pokegram.games/user/${user.userId}/updateFarm`, { farm: newFarm });
               return newFarm;
             }
-            else {
-              setAlertMax(true);
-              return maxFarm;
+            // else {
+            //   setAlertMax(true);
+            //   return maxFarm;
 
-            }
+            // }
           });
         }, 1000);
       } catch (error) {
