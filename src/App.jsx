@@ -158,14 +158,10 @@ function App() {
     return /^UQ[a-zA-Z0-9_]{46}$/.test(wallet);
   };
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    setInviteBy(urlParams.toString().split('=')[1]);
-    fetchUser();
+    fetchUser()
 
   }, [])
   const fetchUser = () => {
-    const tg = window.Telegram?.WebApp;
-    const userId = tg.initDataUnsafe?.user.id;
     axios.get(`https://pokegram.games/user/${userId}`)
       .then(
         response => {
@@ -329,7 +325,7 @@ function App() {
   const showMenuQuest = () => {
     setQuest(!quest);
   }
-  console.log(farm);
+  // console.log(farm);
   const startFarming = async () => {
     if (user && !intervalRef.current) {
       const maxFarm = (user?.farmSpeed * rankBuff * 60 * 4)
@@ -378,7 +374,7 @@ function App() {
       const response = await axios.post(`https://pokegram.games/user/${userId}/levelUp`);
       if (response.data != 0) {
         message.success(`Bạn nâng cấp lên level ${user?.level + 1} thành công!`);
-        fetchUser();
+        updateData();
         hideLevelUp();
       }
       else {
@@ -501,7 +497,7 @@ function App() {
     if (response.data.message == 1) {
       setClaimQ(false);
       message.success(`Bạn nhận thưởng thành công!`);
-      fetchUser();
+      updateUserData()
     }
     else {
       message.error(`Bạn nhận chưa hoàn thành quest!`);
