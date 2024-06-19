@@ -75,30 +75,16 @@ function App() {
           if (response.data.offlineTime !== null) {
             setOfflineTime(response.data.offlineTime);
           }
-          const userData = response.data.user;
-            console.log(userData);
+          const userData = response?.data.user;
+          if (userData) {
             setUser(userData);
-            console.log(userData);
-            if (userData.rank == 1) {
-              setFarm(userData.farm * userData.farmSpeed * 1 / 60)
-              console.log("Bug");
-            }
-            if (userData.rank == 2) {
-              setrankBuff(1.1);
-              setFarm(userData.farm * userData.farmSpeed * 1.1 / 60)
-            }
-            if (userData.rank == 3) {
-              setrankBuff(1.3);
-              setFarm(userData.farm * userData.farmSpeed * 1.3 / 60)
-            }
-            if (userData.rank == 4) {
-              setrankBuff(1.5);
-              setFarm(userData.farm * userData.farmSpeed * 1.5 / 60)
-            }
-            if (userData.rank == 5) {
-              setrankBuff(2);
-              setFarm(userData.farm * userData.farmSpeed * 2 / 60)
-            }
+            const rankMultiplier = getRankMultiplier(userData.rank);
+            setFarm(userData.farm * userData.farmSpeed * rankMultiplier / 60);
+
+          } else {
+            console.error('No user data received');
+          }
+
         } catch (error) {
           console.error('Error updating login time:', error);
         }
@@ -118,7 +104,22 @@ function App() {
       console.log('Message from server:', message);
       // Xử lý các tin nhắn từ server (cập nhật trạng thái người dùng, vv.)
     };
-
+    const getRankMultiplier = (rank) => {
+      switch (rank) {
+        case 1:
+          return 1;
+        case 2:
+          return 1.1;
+        case 3:
+          return 1.3;
+        case 4:
+          return 1.5;
+        case 5:
+          return 2;
+        default:
+          return 1;
+      }
+    };
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'hidden') {
         ws.send(JSON.stringify({ type: 'logout', userId }));
@@ -323,9 +324,10 @@ function App() {
     setQuest(!quest);
   }
   const startFarming = async () => {
+    console.log(user);
     if (user && !intervalRef.current) {
       const maxFarm = (user?.farmSpeed * rankBuff * 60 * 4)
-      console.log(maxFarm);
+
       try {
         const response = await axios.get(`https://pokegram.games/rank/${user.rank}`);
         if (response.data) {
