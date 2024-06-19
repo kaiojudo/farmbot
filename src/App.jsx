@@ -42,7 +42,6 @@ function App() {
   const [walletAddress, setWalletAddress] = useState(null);
   const [alertMax, setAlertMax] = useState(false);
 
-
   useEffect(() => {
     const checkConnection = async () => {
       const wallets = await connector.getWallets();
@@ -76,7 +75,7 @@ function App() {
           console.log('Login time updated:', response.data.timeLogIn);
           if (response.data.offlineTime !== null) {
             setOfflineTime(response.data.offlineTime);
-
+            setFarm(response.data.farmTime * rankBuff * user?.farmSpeed);
           }
         } catch (error) {
           console.error('Error updating login time:', error);
