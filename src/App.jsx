@@ -153,23 +153,23 @@ function App() {
           const userData = response?.data;
           if (userData.rank == 1) {
             setRankBuff(1);
-            setFarm(totalFarmTime * response.data.farmSpeed * rankBuff)
+            setFarm(response.data.farm * response.data.farmSpeed * rankBuff)
           }
           if (userData.rank == 2) {
             setRankBuff(1.1);
-            setFarm(totalFarmTime * response.data.farmSpeed * rankBuff)
+            setFarm(response.data.farm * response.data.farmSpeed * rankBuff)
           }
           if (userData.rank == 3) {
             setRankBuff(1.3);
-            setFarm(totalFarmTime * response.data.farmSpeed * rankBuff)
+            setFarm(response.data.farm * response.data.farmSpeed * rankBuff)
           }
           if (userData.rank == 4) {
             setRankBuff(1.5);
-            setFarm(totalFarmTime * response.data.farmSpeed * rankBuff)
+            setFarm(response.data.farm * response.data.farmSpeed * rankBuff)
           }
           if (userData.rank == 5) {
             setRankBuff(2);
-            setFarm(totalFarmTime * response.data.farmSpeed * rankBuff)
+            setFarm(response.data.farm * response.data.farmSpeed * rankBuff)
           }
           if (userData.lastClaimTime) {
             const lastClaimTime = new Date(userData.lastClaimTime);
@@ -209,7 +209,7 @@ function App() {
         setLoading(true)
       )
   }
-
+  console.log(farm);
   //Claim Share Coin
   const claimShareCoin = async () => {
     const res = await axios.post(`https://pokegram.games/user/claimShareCoin/${user.userId}`)
