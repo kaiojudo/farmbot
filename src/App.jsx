@@ -35,7 +35,7 @@ function App() {
   const [claimQ, setClaimQ] = useState(true);
   const [copied, setCopied] = useState(false);
   const [totalShareCoin, setTotalShareCoin] = useState(0);
-  const [rankBuff, setRankBuff] = useState(0);
+  const [rankBuff, setrankBuff] = useState(0);
   const [showOffline, setShowOffline] = useState(true);
   const [offlineTime, setOfflineTime] = useState(null);
   const [walletAddress, setWalletAddress] = useState(null);
@@ -152,31 +152,31 @@ function App() {
 
           const userData = response?.data;
           if (userData.rank == 1) {
-            setRankBuff(1);
-            setFarm(response.data.farm * response.data.farmSpeed * rankBuff)
+            setrankBuff / 60(1);
+            setFarm(response.data.farm * response.data.farmSpeed * rankBuff / 60)
           }
           if (userData.rank == 2) {
-            setRankBuff(1.1);
-            setFarm(response.data.farm * response.data.farmSpeed * rankBuff)
+            setrankBuff / 60(1.1);
+            setFarm(response.data.farm * response.data.farmSpeed * rankBuff / 60)
           }
           if (userData.rank == 3) {
-            setRankBuff(1.3);
-            setFarm(response.data.farm * response.data.farmSpeed * rankBuff)
+            setrankBuff / 60(1.3);
+            setFarm(response.data.farm * response.data.farmSpeed * rankBuff / 60)
           }
           if (userData.rank == 4) {
-            setRankBuff(1.5);
-            setFarm(response.data.farm * response.data.farmSpeed * rankBuff)
+            setrankBuff / 60(1.5);
+            setFarm(response.data.farm * response.data.farmSpeed * rankBuff / 60)
           }
           if (userData.rank == 5) {
-            setRankBuff(2);
-            setFarm(response.data.farm * response.data.farmSpeed * rankBuff)
+            setrankBuff / 60(2);
+            setFarm(response.data.farm * response.data.farmSpeed * rankBuff / 60)
           }
           if (userData.lastClaimTime) {
             const lastClaimTime = new Date(userData.lastClaimTime);
             const nextClaimTime = new Date(lastClaimTime.getTime() + 6 * 60 * 60 * 1000); // Cộng thêm 6 tiếng
             setNextClaim(nextClaimTime);
           }
-          
+
           const fetchInvitedUsers = async () => {
             try {
               const res = await axios.get(`https://pokegram.games/inviteUser/search/${response?.data.userId}`);
@@ -209,7 +209,6 @@ function App() {
         setLoading(true)
       )
   }
-  console.log(farm);
   //Claim Share Coin
   const claimShareCoin = async () => {
     const res = await axios.post(`https://pokegram.games/user/claimShareCoin/${user.userId}`)
@@ -332,12 +331,12 @@ function App() {
   }
   const startFarming = async () => {
     if (user && !intervalRef.current) {
-      const maxFarm = (user?.farmSpeed * rankBuff * 60 * 4)
+      const maxFarm = (user?.farmSpeed * rankBuff / 60 * 60 * 4)
       console.log(maxFarm);
       try {
         const response = await axios.get(`https://pokegram.games/rank/${user.rank}`);
         if (response.data) {
-          setRankBuff(response.data.rank_buff);
+          setrankBuff / 60(response.data.rank_buff);
         }
         intervalRef.current = setInterval(() => {
 
@@ -514,10 +513,10 @@ function App() {
       const userId = user.userId;
       let offlineCoin = 0;
       if (offlineTime + user.totalOfflineTime < 40) {
-        offlineCoin = user?.farmSpeed * rankBuff / 60 * (offlineTime + user.totalOfflineTime) * 0.7;
+        offlineCoin = user?.farmSpeed * rankBuff / 60 / 60 * (offlineTime + user.totalOfflineTime) * 0.7;
       }
       else {
-        offlineCoin = user?.farmSpeed * rankBuff / 60 * 40 * 0.7;
+        offlineCoin = user?.farmSpeed * rankBuff / 60 / 60 * 40 * 0.7;
       }
       const response = await axios.post(`https://pokegram.games/user/${userId}/claimoffline`, { offlineCoin });
       updateData();
@@ -531,10 +530,10 @@ function App() {
       const userId = user.userId;
       let offlineCoin = 0;
       if (user.totalOfflineTime < 40) {
-        offlineCoin = user?.farmSpeed * rankBuff / 60 * user.totalOfflineTime * 1.6;
+        offlineCoin = user?.farmSpeed * rankBuff / 60 / 60 * user.totalOfflineTime * 1.6;
       }
       else {
-        offlineCoin = user?.farmSpeed * rankBuff / 60 * 40 * 1.6;
+        offlineCoin = user?.farmSpeed * rankBuff / 60 / 60 * 40 * 1.6;
       }
       const response = await axios.post(`https://pokegram.games/user/${userId}/claimoffline`, { offlineCoin });
       updateData();
@@ -602,10 +601,10 @@ function App() {
         <Offline
           user={user}
           rankBuff={rankBuff}
-          offlineTime={offlineTime}
-          claimOffline={claimOffline}
-          claimOfflinePro={claimOfflinePro}
-          hideOfflineMenu={hideOfflineMenu}
+      offlineTime={offlineTime}
+      claimOffline={claimOffline}
+      claimOfflinePro={claimOfflinePro}
+      hideOfflineMenu={hideOfflineMenu}
         />}
       <h1>Welcome to the Telegram Mini App</h1>
       {walletAddress ? (
