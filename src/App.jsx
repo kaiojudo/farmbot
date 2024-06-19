@@ -76,29 +76,29 @@ function App() {
             setOfflineTime(response.data.offlineTime);
           }
           const userData = response.data.user;
-          console.log(userData);
-          setUser(userData);
-          console.log(userData);
-          if (userData.rank == 1) {
-            setFarm(userData.farm * userData.farmSpeed * 1 / 60)
-            console.log(farm);
-          }
-          if (userData.rank == 2) {
-            setrankBuff(1.1);
-            setFarm(userData.farm * userData.farmSpeed * 1.1 / 60)
-          }
-          if (userData.rank == 3) {
-            setrankBuff(1.3);
-            setFarm(userData.farm * userData.farmSpeed * 1.3 / 60)
-          }
-          if (userData.rank == 4) {
-            setrankBuff(1.5);
-            setFarm(userData.farm * userData.farmSpeed * 1.5 / 60)
-          }
-          if (userData.rank == 5) {
-            setrankBuff(2);
-            setFarm(userData.farm * userData.farmSpeed * 2 / 60)
-          }
+            console.log(userData);
+            setUser(userData);
+            console.log(userData);
+            if (userData.rank == 1) {
+              setFarm(userData.farm * userData.farmSpeed * 1 / 60)
+              console.log("Bug");
+            }
+            if (userData.rank == 2) {
+              setrankBuff(1.1);
+              setFarm(userData.farm * userData.farmSpeed * 1.1 / 60)
+            }
+            if (userData.rank == 3) {
+              setrankBuff(1.3);
+              setFarm(userData.farm * userData.farmSpeed * 1.3 / 60)
+            }
+            if (userData.rank == 4) {
+              setrankBuff(1.5);
+              setFarm(userData.farm * userData.farmSpeed * 1.5 / 60)
+            }
+            if (userData.rank == 5) {
+              setrankBuff(2);
+              setFarm(userData.farm * userData.farmSpeed * 2 / 60)
+            }
         } catch (error) {
           console.error('Error updating login time:', error);
         }
@@ -172,7 +172,6 @@ function App() {
             const nextClaimTime = new Date(lastClaimTime.getTime() + 6 * 60 * 60 * 1000); // Cộng thêm 6 tiếng
             setNextClaim(nextClaimTime);
           }
-
           const fetchInvitedUsers = async () => {
             try {
               const res = await axios.get(`https://pokegram.games/inviteUser/search/${response?.data.userId}`);
@@ -183,9 +182,7 @@ function App() {
                 if (resp.data.totalShareCoin) {
                   setTotalShareCoin(resp.data.totalShareCoin);
                 }
-
               }
-
               if (user.lastClaimTime) {
                 const lastClaimTime = new Date();
                 const nextClaimTime = new Date(lastClaimTime.getTime() + 6 * 60 * 60 * 1000); // Cộng thêm 6 tiếng
@@ -325,7 +322,6 @@ function App() {
   const showMenuQuest = () => {
     setQuest(!quest);
   }
-  console.log(farm);
   const startFarming = async () => {
     if (user && !intervalRef.current) {
       const maxFarm = (user?.farmSpeed * rankBuff * 60 * 4)
