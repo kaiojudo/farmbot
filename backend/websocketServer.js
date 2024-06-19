@@ -42,7 +42,7 @@ wss.on('connection', function connection(ws) {
         broadcast(JSON.stringify({ type: 'status', userId, status: 'online' }));
       } else if (type === 'logout') {
         await redisClient.del(`user:${userId}`);
-        await sendLogoutRequest(userId);
+        await sendLogoutRequest(userId, farm);
         console.log(`User ${userId} logged out`);
         // Phát thông báo tới các client khác nếu cần
         broadcast(JSON.stringify({ type: 'status', userId, status: 'offline' }));
@@ -68,10 +68,10 @@ wss.on('connection', function connection(ws) {
   });
 });
 
-async function sendLogoutRequest(userId) {
+async function sendLogoutRequest(userId, farm) {
   const now = new Date().toISOString();
   try {
-    const response = await axios.post(`https://pokegram.games/user/${userId}/logout`, { timeLogOut: now });
+    const response = await axios.post(`https://pokegram.games/user/${userId}/logout`, { timeLogOut: now, farm });
     // console.log('Logout request response:', response.data);
     return response.data;
   } catch (error) {

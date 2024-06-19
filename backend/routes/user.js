@@ -336,12 +336,12 @@ router.post('/:userId/login', async (req, res) => {
 // Endpoint để lưu thời gian rời khỏi trang
 router.post('/:userId/logout', async (req, res) => {
     const { userId } = req.params;
-    const { timeLogOut } = req.body;
+    const { timeLogOut, farm } = req.body;
 
     try {
         const user = await User.findOneAndUpdate(
             { userId },
-            { timeLogOut },
+            { timeLogOut, farm },
             { new: true }
         );
 

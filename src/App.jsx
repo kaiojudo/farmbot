@@ -85,21 +85,14 @@ function App() {
 
     ws.onclose = () => {
       console.log('Disconnected from WebSocket server');
-      const logout = async () => {
-        try {
-          // Kiểm tra trạng thái của WebSocket trước khi gửi
-          if (ws.readyState === WebSocket.OPEN) {
-            const now = new Date().toISOString();
-            await axios.post(`https://pokegram.games/user/${userId}/logout`, { timeLogOut: now });
-            console.log('Logout time saved successfully');
-          } else {
-            console.log('WebSocket is closed. Logout request skipped.');
-          }
-        } catch (error) {
-          console.error('Error saving logout time:', error);
-        }
-      };
-      logout();
+      const message = JSON.stringify({
+        type: 'logout',
+        userId: userId, 
+        farm: farm,
+      });
+
+      // Gửi thông điệp logout chứa dữ liệu farm
+      ws.send(message);
     };
 
 
