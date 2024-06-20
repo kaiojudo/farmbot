@@ -248,11 +248,7 @@ function App() {
                 const nextClaimTime = new Date(lastClaimTime.getTime() + 6 * 60 * 60 * 1000); // Cộng thêm 6 tiếng
                 setNextClaim(nextClaimTime);
               }
-              else {
-                const lastClaimTime = new Date();
-                const nextClaimTime = new Date(lastClaimTime.getTime() + 6 * 60 * 60 * 1000); // Cộng thêm 6 tiếng
-                setNextClaim(nextClaimTime);
-              }
+
             } catch (error) {
 
             }
