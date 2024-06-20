@@ -321,8 +321,11 @@ function App() {
   const showMenuQuest = () => {
     setQuest(!quest);
   }
+  const farmingStartedRef = useRef(false); // Thêm cờ để kiểm soát việc bắt đầu farming
+
   const startFarming = async () => {
-    if (user && !intervalRef.current) {
+    if (user && !intervalRef.current && !farmingStartedRef.current) {
+      farmingStartedRef.current = true; // Đặt cờ để đảm bảo chỉ chạy một lần
       try {
         const response = await axios.get(`https://pokegram.games/rank/${user.rank}`);
         if (response.data) {
@@ -334,14 +337,11 @@ function App() {
             return newFarm;
           });
         }, 1000);
-
       } catch (error) {
         console.error('Failed to fetch rank:', error);
       }
-
       return 'Farming started'; // Trả về một giá trị để xác nhận rằng hàm đã chạy thành công
     }
-
     return 'Farming not started'; // Hoặc trả về một giá trị khác để chỉ ra rằng hàm không chạy được
   };
 
@@ -349,18 +349,22 @@ function App() {
     const result = await startFarming();
     console.log('Result from startFarming:', result);
   };
+
   useEffect(() => {
-    if (user?.farm >= 0) {
+    if (user?.farm >= 0 && !intervalRef.current && !farmingStartedRef.current) { // Kiểm tra kỹ lưỡng
       handleStartFarming();
-      // Xóa bỏ interval khi component được unmount hoặc khi user thay đổi
-      return () => {
-        if (intervalRef.current) {
-          clearInterval(intervalRef.current);
-          intervalRef.current = null;
-        }
-      };
     }
+    // Xóa bỏ interval khi component được unmount hoặc khi user thay đổi
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+        farmingStartedRef.current = false; // Reset cờ khi component unmount hoặc user thay đổi
+      }
+    };
   }, [user]);
+
+
   const levelUp = async () => {
     try {
       const userId = user?.userId;
