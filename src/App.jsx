@@ -165,6 +165,7 @@ function App() {
   useEffect(() => {
     if (user?.username)
       fetchUser()
+    console.log(user);
   }, [])
   const fetchUser = () => {
     axios.get(`https://pokegram.games/user/${userId}`)
