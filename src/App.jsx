@@ -78,9 +78,12 @@ function App() {
           if (userData) {
             setUser(userData);
             const rankMultiplier = getRankMultiplier(userData.rank);
-            setFarm(userData.farm * rankMultiplier * userData.farmSpeed / 60);
             if (userData.farm > 10) {
               setAlertMax(true);
+              setFarm(10 * rankMultiplier * userData.farmSpeed / 60);
+            }
+            else {
+              setFarm(userData.farm * rankMultiplier * userData.farmSpeed / 60);
             }
           } else {
             console.error('No user data received');
