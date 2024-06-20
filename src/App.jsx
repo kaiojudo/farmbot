@@ -79,7 +79,6 @@ function App() {
           if (userData) {
             setUser(userData);
             const rankMultiplier = getRankMultiplier(userData.rank);
-            setFarm(userData.farm * userData.farmSpeed * rankMultiplier / 60);
 
           } else {
             console.error('No user data received');
@@ -326,7 +325,7 @@ function App() {
   const startFarming = async () => {
     console.log(user);
     if (user && !intervalRef.current) {
-      const maxFarm = (user?.farmSpeed * rankBuff * 60 * 4)
+      const maxFarm = user?.farmSpeed * rankBuff * 60 * 4;
 
       try {
         const response = await axios.get(`https://pokegram.games/rank/${user.rank}`);
@@ -334,30 +333,37 @@ function App() {
           setrankBuff(response.data.rank_buff);
         }
         intervalRef.current = setInterval(() => {
-
           setFarm(prevFarm => {
             const newFarm = prevFarm + (user.farmSpeed * response.data.rank_buff / 60);
             if (newFarm < maxFarm) {
-              setAlertMax(false)
+              setAlertMax(false);
               return newFarm;
+            } else {
+              setAlertMax(true);
+              return maxFarm; // Trả về giá trị maxFarm khi đạt giới hạn
             }
-            // else {
-            //   setAlertMax(true);
-            //   return maxFarm;
-
-            // }
           });
         }, 1000);
       } catch (error) {
         console.error('Failed to fetch rank:', error);
       }
 
+      return 'Farming started'; // Trả về một giá trị để xác nhận rằng hàm đã chạy thành công
     }
+
+    return 'Farming not started'; // Hoặc trả về một giá trị khác để chỉ ra rằng hàm không chạy được
   };
-  //
+
+  const handleStartFarming = async () => {
+    const result = await startFarming();
+    console.log('Result from startFarming:', result);
+    // Tiếp tục xử lý kết quả nếu cần
+  };
+
+
   // console.log(offlineTime + user?.totalOfflineTime);
   useEffect(() => {
-    startFarming();
+    handleStartFarming();
     // Xóa bỏ interval khi component được unmount hoặc khi user thay đổi
     return () => {
       if (intervalRef.current) {
