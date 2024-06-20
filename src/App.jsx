@@ -466,10 +466,10 @@ function App() {
       const userId = user.userId;
       let offlineCoin = 0;
       if (offlineTime + user.totalOfflineTime < 40) {
-        offlineCoin = user?.farmSpeed * rankBuff / 60 / 60 * (offlineTime + user.totalOfflineTime) * 0.7;
+        offlineCoin = user?.farmSpeed * rankBuff / 60 * (offlineTime + user.totalOfflineTime) * 0.7;
       }
       else {
-        offlineCoin = user?.farmSpeed * rankBuff / 60 / 60 * 40 * 0.7;
+        offlineCoin = user?.farmSpeed * rankBuff / 60 * 40 * 0.7;
       }
       const response = await axios.post(`https://pokegram.games/user/${userId}/claimoffline`, { offlineCoin });
       updateData();
@@ -483,10 +483,10 @@ function App() {
       const userId = user.userId;
       let offlineCoin = 0;
       if (user.totalOfflineTime < 40) {
-        offlineCoin = user?.farmSpeed * rankBuff / 60 / 60 * user.totalOfflineTime * 1.6;
+        offlineCoin = user?.farmSpeed * rankBuff / 60 * user.totalOfflineTime * 1.6;
       }
       else {
-        offlineCoin = user?.farmSpeed * rankBuff / 60 / 60 * 40 * 1.6;
+        offlineCoin = user?.farmSpeed * rankBuff / 60 * 40 * 1.6;
       }
       const response = await axios.post(`https://pokegram.games/user/${userId}/claimoffline`, { offlineCoin });
       updateData();
