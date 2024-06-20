@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default function StartMenu(props) {
-    const { user, idTwitter, tonWallet, setIdTwitter, setTonWallet, handleSaveUser, loading } = props;
+    const { user, idTwitter, tonWallet, setIdTwitter, setTonWallet, loading } = props;
     return (
         <div className='start-menu'>
             <h1>Welcome to My Telegram WebApp</h1>

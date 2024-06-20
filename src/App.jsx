@@ -274,49 +274,6 @@ function App() {
       alert("Bạn chỉ được claim sau 6 tiêngs")
     }
   };
-  const handleSaveUser = () => {
-
-    const tg = window.Telegram?.WebApp;
-    if (tg) {
-      const user = tg.initDataUnsafe?.user;
-      if (user) {
-        if (!isValidTonWallet(tonWallet)) {
-          alert("Ton wallet loi")
-          return;
-        }
-        if (idTwitter == "") {
-          alert("vui long nhap twId")
-        }
-        else {
-          axios.post(`https://pokegram.games/user/${user.id}`, {
-            username: user.username,
-            firstname: user.first_name,
-            lastname: user.last_name,
-            checked: true,
-            twitterId: idTwitter,
-            tonWallet: tonWallet,
-            inviteBy: inviteBy // Thêm inviteBy nếu có
-          })
-            .then(response => {
-              console.log(user);
-              setUser(response.data);
-            })
-            .catch(error => {
-              if (error.response && error.response.data && error.response.data.message) {
-                alert(error.response.data.message);
-              } else {
-                alert('Failed to save user data');
-              }
-            }
-            )
-            .finally(
-              setLoading(true)
-            );
-        }
-
-      }
-    }
-  };
   //show Menu Quest
   const showMenuQuest = () => {
     setQuest(!quest);
@@ -547,7 +504,6 @@ function App() {
     <div className="App">
       <StartMenu
         user={user}
-        handleSaveUser={handleSaveUser}
         idTwitter={idTwitter}
         tonWallet={tonWallet}
         setIdTwitter={setIdTwitter}
