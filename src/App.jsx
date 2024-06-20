@@ -503,74 +503,69 @@ function App() {
   return (
 
     <div className="App">
-      {user?.username && (
-        <>
-          <StartMenu
-            user={user}
-            idTwitter={idTwitter}
-            tonWallet={tonWallet}
-            setIdTwitter={setIdTwitter}
-            setTonWallet={setTonWallet}
-            loading={loading}
-            showMenuQuest={showMenuQuest}
-          />
-          <button onClick={showMenuQuest}>Quest</button>
-          {quest && <Quest
-            claimQ={claimQ}
-            user={user}
-            joinChannel={joinChannel}
-            joinGroup={joinGroup}
-            channelButtonImg={channelButtonImg}
-            groupButtonImg={groupButtonImg}
-            handleCheckCh={handleCheckCh}
-            handleCheckGr={handleCheckGr}
-            claimJoinQuest={claimJoinQuest}
+      <StartMenu
+        user={user}
+        idTwitter={idTwitter}
+        tonWallet={tonWallet}
+        setIdTwitter={setIdTwitter}
+        setTonWallet={setTonWallet}
+        loading={loading}
+        showMenuQuest={showMenuQuest}
+      />
+      <button onClick={showMenuQuest}>Quest</button>
+      {quest && <Quest
+        claimQ={claimQ}
+        user={user}
+        joinChannel={joinChannel}
+        joinGroup={joinGroup}
+        channelButtonImg={channelButtonImg}
+        groupButtonImg={groupButtonImg}
+        handleCheckCh={handleCheckCh}
+        handleCheckGr={handleCheckGr}
+        claimJoinQuest={claimJoinQuest}
 
 
-          />}
-          {user &&
-            <FarmField
-              user={user}
-              farm={farm}
-              claimCoin={claimCoin}
-              showLevelUp={showLevelUp}
-              levelUp={levelUp}
-              nextClaim={nextClaim}
-              invitedUsers={invitedUsers}
-              handleCopyClick={handleCopyClick}
-              textAreaRef={textAreaRef}
-              copied={copied}
-              totalShareCoin={totalShareCoin}
-              claimShareCoin={claimShareCoin}
-              alertMax={alertMax}
-            />}
-          {showMenuLevelUp && <ShowLevelUp
-            user={user}
-            levelUp={levelUp}
-            hideLevelUp={hideLevelUp}
-          />}
-          <button onClick={handleLogoutClick} className='close'>
-            Close WebApp
-          </button>
-          <CopyText />
-          {(user?.totalOfflineTime + offlineTime > 10 && showOffline) &&
-            <Offline
-              user={user}
-              rankBuff={rankBuff}
-              offlineTime={offlineTime}
-              claimOffline={claimOffline}
-              claimOfflinePro={claimOfflinePro}
-              hideOfflineMenu={hideOfflineMenu}
-            />}
-          <h1>Welcome to the Telegram Mini App</h1>
-          {walletAddress ? (
-            <WalletInfo walletAddress={walletAddress} />
-          ) : (
-            <ConnectWalletButton setWalletAddress={setWalletAddress} />
-          )}
-        </>
+      />}
+      {user &&
+        <FarmField
+          user={user}
+          farm={farm}
+          claimCoin={claimCoin}
+          showLevelUp={showLevelUp}
+          levelUp={levelUp}
+          nextClaim={nextClaim}
+          invitedUsers={invitedUsers}
+          handleCopyClick={handleCopyClick}
+          textAreaRef={textAreaRef}
+          copied={copied}
+          totalShareCoin={totalShareCoin}
+          claimShareCoin={claimShareCoin}
+          alertMax={alertMax}
+        />}
+      {showMenuLevelUp && <ShowLevelUp
+        user={user}
+        levelUp={levelUp}
+        hideLevelUp={hideLevelUp}
+      />}
+      <button onClick={handleLogoutClick} className='close'>
+        Close WebApp
+      </button>
+      <CopyText />
+      {(user?.totalOfflineTime + offlineTime > 10 && showOffline) &&
+        <Offline
+          user={user}
+          rankBuff={rankBuff}
+          offlineTime={offlineTime}
+          claimOffline={claimOffline}
+          claimOfflinePro={claimOfflinePro}
+          hideOfflineMenu={hideOfflineMenu}
+        />}
+      <h1>Welcome to the Telegram Mini App</h1>
+      {walletAddress ? (
+        <WalletInfo walletAddress={walletAddress} />
+      ) : (
+        <ConnectWalletButton setWalletAddress={setWalletAddress} />
       )}
-
 
     </div>
 
