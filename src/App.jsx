@@ -243,12 +243,6 @@ function App() {
 
               }
 
-              if (user.lastClaimTime) {
-                const lastClaimTime = new Date();
-                const nextClaimTime = new Date(lastClaimTime.getTime() + 6 * 60 * 60 * 1000); // Cộng thêm 6 tiếng
-                setNextClaim(nextClaimTime);
-              }
-
             } catch (error) {
 
             }
@@ -256,6 +250,12 @@ function App() {
           fetchInvitedUsers();
         }
       )
+  }
+  //UpdateClaim
+  const UpdateClaimTime = () => {
+    const lastClaimTime = new Date();
+    const nextClaimTime = new Date(lastClaimTime.getTime() + 6 * 60 * 60 * 1000); // Cộng thêm 6 tiếng
+    setNextClaim(nextClaimTime);
   }
   //Claim Coin
   const claimCoin = async () => {
@@ -266,6 +266,7 @@ function App() {
       startFarming();
       updateUserData();
       setAlertMax(false);
+      UpdateClaimTime();
     } catch (error) {
       alert("Bạn chỉ được claim sau 6 tiêngs")
     }
