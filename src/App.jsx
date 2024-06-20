@@ -62,7 +62,6 @@ function App() {
   //Websocket
   useEffect(() => {
     const ws = new WebSocket('wss://websocket.pokegram.games');
-
     ws.onopen = () => {
       console.log('Connected to WebSocket server');
       ws.send(JSON.stringify({ type: 'login', userId }));
@@ -79,7 +78,7 @@ function App() {
           if (userData) {
             setUser(userData);
             const rankMultiplier = getRankMultiplier(userData.rank);
-
+            setFarm(userData.farm * rankMultiplier * userData.farmSpeed / 60)
           } else {
             console.error('No user data received');
           }
@@ -323,10 +322,7 @@ function App() {
     setQuest(!quest);
   }
   const startFarming = async () => {
-    console.log(user);
     if (user && !intervalRef.current) {
-      const maxFarm = user?.farmSpeed * rankBuff * 60 * 4;
-
       try {
         const response = await axios.get(`https://pokegram.games/rank/${user.rank}`);
         if (response.data) {
@@ -335,15 +331,10 @@ function App() {
         intervalRef.current = setInterval(() => {
           setFarm(prevFarm => {
             const newFarm = prevFarm + (user.farmSpeed * response.data.rank_buff / 60);
-            if (newFarm < maxFarm) {
-              setAlertMax(false);
-              return newFarm;
-            } else {
-              setAlertMax(true);
-              return maxFarm; // Trả về giá trị maxFarm khi đạt giới hạn
-            }
+            return newFarm;
           });
         }, 1000);
+
       } catch (error) {
         console.error('Failed to fetch rank:', error);
       }
@@ -357,20 +348,18 @@ function App() {
   const handleStartFarming = async () => {
     const result = await startFarming();
     console.log('Result from startFarming:', result);
-    // Tiếp tục xử lý kết quả nếu cần
   };
-
-
-  // console.log(offlineTime + user?.totalOfflineTime);
   useEffect(() => {
-    handleStartFarming();
-    // Xóa bỏ interval khi component được unmount hoặc khi user thay đổi
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
-    };
+    if (user?.farm >= 0) {
+      handleStartFarming();
+      // Xóa bỏ interval khi component được unmount hoặc khi user thay đổi
+      return () => {
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+        }
+      };
+    }
   }, [user]);
   const levelUp = async () => {
     try {
