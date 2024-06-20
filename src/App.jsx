@@ -243,11 +243,8 @@ function App() {
                       }
                     }
                   )
-
               }
-
             } catch (error) {
-
             }
           };
           fetchInvitedUsers();
@@ -334,7 +331,7 @@ function App() {
         intervalRef.current = setInterval(() => {
           setFarm(prevFarm => {
             const newFarm = prevFarm + (user.farmSpeed * response.data.rank_buff / 60);
-            const maxFarm = (user.farmSpeed * response.data.rank_buff);
+            const maxFarm = (user.farmSpeed * response.data.rank_buff) / 6;
             if (newFarm < maxFarm)
               return newFarm;
             setAlertMax(true);
