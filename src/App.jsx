@@ -78,7 +78,10 @@ function App() {
           if (userData) {
             setUser(userData);
             const rankMultiplier = getRankMultiplier(userData.rank);
-            setFarm(userData.farm * rankMultiplier * userData.farmSpeed / 60)
+            setFarm(userData.farm * rankMultiplier * userData.farmSpeed / 60);
+            if (userData.farm > 30) {
+              setAlertMax(true);
+            }
           } else {
             console.error('No user data received');
           }
@@ -321,7 +324,7 @@ function App() {
   const farmingStartedRef = useRef(false); // Thêm cờ để kiểm soát việc bắt đầu farming
 
   const startFarming = async () => {
-    if (user && !intervalRef.current && !farmingStartedRef.current) {
+    if (user && !intervalRef.current && !farmingStartedRef.current && !alertMax) {
       farmingStartedRef.current = true; // Đặt cờ để đảm bảo chỉ chạy một lần
       try {
         const response = await axios.get(`https://pokegram.games/rank/${user.rank}`);
