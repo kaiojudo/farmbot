@@ -163,9 +163,7 @@ function App() {
     return /^UQ[a-zA-Z0-9_]{46}$/.test(wallet);
   };
   useEffect(() => {
-    if (user?.username)
-      fetchUser()
-    console.log(user);
+    fetchUser()
   }, [])
   const fetchUser = () => {
     axios.get(`https://pokegram.games/user/${userId}`)
