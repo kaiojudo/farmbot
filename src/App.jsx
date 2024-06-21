@@ -500,7 +500,7 @@ function App() {
   }
   const connectTwitter = async () => {
     try {
-      const response = await fetch('https://pokegram.games/api/twitter/auth');
+      const response = await axios.get('https://pokegram.games/api/twitter/auth');
       const data = await response.json();
       // Handle response from server
     } catch (error) {
@@ -574,7 +574,7 @@ function App() {
       ) : (
         <ConnectWalletButton setWalletAddress={setWalletAddress} />
       )}
-    <button onClick={connectTwitter}>Connect</button>
+      <button onClick={connectTwitter}>Connect</button>
     </div>
 
   );
