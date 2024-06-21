@@ -13,6 +13,7 @@ import ShowLevelUp from './components/ShowLevelUp';
 import { message } from 'antd';
 import CopyText from './components/CopyText';
 import Offline from './components/Offline';
+import { TonClient } from 'ton-client-js';
 
 
 
@@ -507,7 +508,27 @@ function App() {
       console.error('Error connecting to Twitter:', error);
     }
   };
+  const handleConnectTON = async () => {
+    const client = new TonClient({
+      network: {
+        server_address: 'https://main.ton.dev' // hoặc sử dụng môi trường khác
+      }
+    });
 
+    try {
+      // Thực hiện các thao tác kết nối ví TON ở đây
+      const { data } = await client.crypto.getPublicKey({});
+
+      // Xử lý kết quả ở đây
+      console.log('Thông tin ví TON:', data);
+
+    } catch (error) {
+      console.error('Lỗi khi kết nối ví TON:', error);
+    } finally {
+      // Đóng kết nối client sau khi hoàn thành công việc
+      await client.close();
+    }
+  };
   return (
 
     <div className="App">
@@ -574,7 +595,7 @@ function App() {
       ) : (
         <ConnectWalletButton setWalletAddress={setWalletAddress} />
       )}
-      <button onClick={connectTwitter}>Connect</button>
+      <button onClick={handleConnectTON}>Connect</button>
     </div>
 
   );
