@@ -498,6 +498,16 @@ function App() {
   const hideOfflineMenu = () => {
     setShowOffline(false);
   }
+  const connectTwitter = async () => {
+    try {
+      const response = await fetch('/api/twitter/auth');
+      const data = await response.json();
+      // Handle response from server
+    } catch (error) {
+      console.error('Error connecting to Twitter:', error);
+    }
+  };
+
   return (
 
     <div className="App">
@@ -564,7 +574,7 @@ function App() {
       ) : (
         <ConnectWalletButton setWalletAddress={setWalletAddress} />
       )}
-
+    <button onClick={connectTwitter}>Connect</button>
     </div>
 
   );
