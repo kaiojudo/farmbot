@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function FarmField(props) {
     const { user, farm, claimCoin, showLevelUp, nextClaim, invitedUsers, textAreaRef, handleCopyClick, copied, totalShareCoin, claimShareCoin, alertMax } = props
-    const textToCopy = `https://t.me/tele_farming_bot?start=${user.inviteRef}`;
+    const textToCopy = `https://t.me/farming_2024_bot?start=${user.inviteRef}`;
     return (
         <div>
             {alertMax && <p className='alertFull'>Full Coin, Please Claim</p>}
