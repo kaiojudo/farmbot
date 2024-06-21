@@ -17,6 +17,7 @@ import { TonClient } from 'ton-client-js';
 
 
 
+
 function App() {
   const intervalRef = useRef(null);
   const [user, setUser] = useState(null);
@@ -508,15 +509,19 @@ function App() {
       console.error('Error connecting to Twitter:', error);
     }
   };
-  const handleConnectTON = async () => {
+  async function connectToTONNetwork() {
+    const network = {
+      server_address: 'https://main.ton.dev' // Địa chỉ của nút (node) mạng TON
+      // Các thông tin khác nếu cần thiết, như network_public_key, network_message_expiration_timeout, ...
+    };
+
     const client = new TonClient({
-      network: {
-        server_address: 'https://main.ton.dev' // hoặc sử dụng môi trường khác
-      }
+      network,
+      // Thêm các cấu hình khác nếu có
     });
 
     try {
-      // Thực hiện các thao tác kết nối ví TON ở đây
+      // Sử dụng client để gọi các phương thức từ TonClient
       const { data } = await client.crypto.getPublicKey({});
 
       // Xử lý kết quả ở đây
@@ -528,7 +533,8 @@ function App() {
       // Đóng kết nối client sau khi hoàn thành công việc
       await client.close();
     }
-  };
+  }
+
   return (
 
     <div className="App">
@@ -595,7 +601,7 @@ function App() {
       ) : (
         <ConnectWalletButton setWalletAddress={setWalletAddress} />
       )}
-      <button onClick={handleConnectTON}>Connect</button>
+      <button onClick={connectToTONNetwork}>Connect</button>
     </div>
 
   );
