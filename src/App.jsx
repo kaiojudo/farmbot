@@ -509,31 +509,6 @@ function App() {
       console.error('Error connecting to Twitter:', error);
     }
   };
-  async function connectToTONNetwork() {
-    const network = {
-      server_address: 'https://main.ton.dev' // Địa chỉ của nút (node) mạng TON
-      // Các thông tin khác nếu cần thiết, như network_public_key, network_message_expiration_timeout, ...
-    };
-
-    const client = new TonClient({
-      network,
-      // Thêm các cấu hình khác nếu có
-    });
-
-    try {
-      // Sử dụng client để gọi các phương thức từ TonClient
-      const { data } = await client.crypto.getPublicKey({});
-
-      // Xử lý kết quả ở đây
-      console.log('Thông tin ví TON:', data);
-
-    } catch (error) {
-      console.error('Lỗi khi kết nối ví TON:', error);
-    } finally {
-      // Đóng kết nối client sau khi hoàn thành công việc
-      await client.close();
-    }
-  }
 
   return (
 
@@ -601,7 +576,7 @@ function App() {
       ) : (
         <ConnectWalletButton setWalletAddress={setWalletAddress} />
       )}
-      <button onClick={connectToTONNetwork}>Connect</button>
+      <button>Connect</button>
     </div>
 
   );
