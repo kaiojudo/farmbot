@@ -11,7 +11,7 @@ import ShowLevelUp from './components/ShowLevelUp';
 import { message } from 'antd';
 import CopyText from './components/CopyText';
 import Offline from './components/Offline';
-import TonConnect from '@tonconnect/sdk';
+import { TonConnectUIProvider } from '@tonconnect/ui-react';
 import TonConnectComponent from './components/TonConnectComponent';
 function App() {
   const intervalRef = useRef(null);
@@ -593,7 +593,7 @@ function App() {
       >
         <div>
           <h1>Ứng dụng Ví TON của tôi</h1>
-          <TonConnet connectTonWallet={connectTonWallet} address={address} />
+          <TonConnectComponent connectTonWallet={connectTonWallet} address={address} />
         </div>
       </TonConnectUIProvider>
 
