@@ -589,7 +589,7 @@ function App() {
         />}
       <h1>Welcome to the Telegram Mini App</h1>
       <TonConnectUIProvider
-        manifestUrl="https://your-manifest-url.com/manifest.json" // Thay đổi thành URL manifest thực tế
+        manifestUrl="https://farmbot-omega.vercel.app/tonconnect-manifest.json" // Thay đổi thành URL manifest thực tế
       >
         <div>
           <h1>Ứng dụng Ví TON của tôi</h1>
