@@ -1,7 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import ConnectWalletButton from './components/ConnectWalletButton';
-import WalletInfo from './components/WalletInfo';
 import './App.css';
 import connector from './tonConnectConfig';
 import StartMenu from './components/StartMenu';
@@ -13,7 +11,6 @@ import ShowLevelUp from './components/ShowLevelUp';
 import { message } from 'antd';
 import CopyText from './components/CopyText';
 import Offline from './components/Offline';
-import { TonClient } from 'ton-client-js';
 import TonConnect from '@tonconnect/sdk';
 
 
