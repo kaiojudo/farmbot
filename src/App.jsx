@@ -12,17 +12,12 @@ import { message } from 'antd';
 import CopyText from './components/CopyText';
 import Offline from './components/Offline';
 import TonConnect from '@tonconnect/sdk';
-
-
-
-
 function App() {
   const intervalRef = useRef(null);
   const [user, setUser] = useState(null);
   const [idTwitter, setIdTwitter] = useState('');
   const [tonWallet, setTonWallet] = useState('');
   const [loading, setLoading] = useState(false);
-  const [inviteBy, setInviteBy] = useState(null);
   const [quest, setQuest] = useState(false);
   const [farm, setFarm] = useState(0);
   const [showMenuLevelUp, setShowMenuLevelUp] = useState(false);
