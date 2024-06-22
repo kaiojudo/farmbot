@@ -2,7 +2,7 @@
   "name": "TeleApp",
   "version": "1.0.0",
   "description": "Description of YourApp",
-  "icon": "https://farmbot-omega.vercel.app/icon.png",
+  "icon": "https://farmbot-omega.vercel.app/icon.jpg",
   "connect": {
     "permissions": ["net.ton.dev"]
   }

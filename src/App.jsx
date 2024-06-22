@@ -12,6 +12,7 @@ import { message } from 'antd';
 import CopyText from './components/CopyText';
 import Offline from './components/Offline';
 import TonConnect from '@tonconnect/sdk';
+import TonConnectComponent from './components/TonConnectComponent';
 function App() {
   const intervalRef = useRef(null);
   const [user, setUser] = useState(null);
@@ -35,6 +36,29 @@ function App() {
   const [offlineTime, setOfflineTime] = useState(null);
   const [walletAddress, setWalletAddress] = useState(null);
   const [alertMax, setAlertMax] = useState(false);
+  const [address, setAddress] = useState(''); // State để lưu địa chỉ ví TON đã kết nối
+
+  const connectTonWallet = async () => {
+    try {
+      // Khởi tạo TonClient
+      const client = new TonClient({
+        network: {
+          server_address: 'main2.ton.dev', // Thay đổi thành mainnet hoặc testnet tùy theo yêu cầu
+        },
+      });
+
+      // Yêu cầu quyền và kết nối tới ví
+      const { result } = await client.crypto.getSigningBox(); // Yêu cầu ví, điều chỉnh theo nhu cầu của bạn
+
+      // Trích xuất địa chỉ ví
+      const walletAddress = result.address;
+
+      // Cập nhật địa chỉ ví vào state
+      setAddress(walletAddress);
+    } catch (error) {
+      console.error('Lỗi kết nối ví TON:', error);
+    }
+  };
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -564,7 +588,15 @@ function App() {
           hideOfflineMenu={hideOfflineMenu}
         />}
       <h1>Welcome to the Telegram Mini App</h1>
-      <TonConnect />
+      <TonConnectUIProvider
+        manifestUrl="https://your-manifest-url.com/manifest.json" // Thay đổi thành URL manifest thực tế
+      >
+        <div>
+          <h1>Ứng dụng Ví TON của tôi</h1>
+          <TonConnet connectTonWallet={connectTonWallet} address={address} />
+        </div>
+      </TonConnectUIProvider>
+
     </div>
 
   );
