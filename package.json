@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@tonconnect/sdk": "^3.0.3",
+    "@tonconnect/ui-react": "^2.0.5",
     "antd": "^5.18.0",
     "axios": "^1.7.2",
     "react": "^18.2.0",

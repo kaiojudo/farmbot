@@ -14,6 +14,7 @@ import { message } from 'antd';
 import CopyText from './components/CopyText';
 import Offline from './components/Offline';
 import { TonClient } from 'ton-client-js';
+import TonConnect from '@tonconnect/sdk';
 
 
 
@@ -571,12 +572,7 @@ function App() {
           hideOfflineMenu={hideOfflineMenu}
         />}
       <h1>Welcome to the Telegram Mini App</h1>
-      {walletAddress ? (
-        <WalletInfo walletAddress={walletAddress} />
-      ) : (
-        <ConnectWalletButton setWalletAddress={setWalletAddress} />
-      )}
-      <button>Connect</button>
+      <TonConnect />
     </div>
 
   );
