@@ -36,15 +36,18 @@ function App() {
   const [offlineTime, setOfflineTime] = useState(null);
   const [walletAddress, setWalletAddress] = useState(null);
   const [alertMax, setAlertMax] = useState(false);
-  const [address, setAddress] = useState(''); // State để lưu địa chỉ ví TON đã kết nối
+  const [address, setAddress] = useState('');
   const [canClaim, setCanClaim] = useState(false)
+
+  const tg = window.Telegram.WebApp;
+  const userId = tg.initDataUnsafe?.user.id;
+  const textAreaRef = useRef(null);
 
   const connectTonWallet = async () => {
     try {
-      // Khởi tạo TonClient
       const client = new TonClient({
         network: {
-          server_address: 'main.ton.dev', // Thay đổi thành mainnet hoặc testnet tùy theo yêu cầu
+          server_address: 'main.ton.dev',
         },
       });
 
@@ -74,9 +77,7 @@ function App() {
 
     checkConnection();
   }, []);
-  const tg = window.Telegram.WebApp;
-  const userId = tg.initDataUnsafe?.user.id;
-  const textAreaRef = useRef(null);
+
 
   //Websocket
   useEffect(() => {
@@ -631,10 +632,9 @@ function App() {
           hideOfflineMenu={hideOfflineMenu}
         />}
       <TonConnectUIProvider
-        manifestUrl="https://farmbot-omega.vercel.app/tonconnect-manifest.json" // Thay đổi thành URL manifest thực tế
+        manifestUrl="https://farmbot-omega.vercel.app/tonconnect-manifest.json" 
       >
         <div>
-          <h1>Ứng dụng Ví TON của tôi</h1>
           <TonConnectComponent connectTonWallet={connectTonWallet} address={address} />
         </div>
       </TonConnectUIProvider>

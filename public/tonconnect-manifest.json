@@ -1,8 +1,7 @@
 {
-  "name": "My TON Wallet App",
-  "description": "A description of your TON Wallet app",
-  "url": "https://farmbot-omega.vercel.app",
-  "icons": [
-    "https://farmbot-omega.vercel.app/icon.jpg"
+  "name": "FarmBot Omega",
+  "icon": "https://farmbot-omega.vercel.app/icon.jpg",
+  "permissions": [
+    "tonAddress"
   ]
 }
