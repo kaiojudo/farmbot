@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default function FarmField(props) {
-    const { user, farm, claimCoin, showLevelUp, nextClaim, invitedUsers, textAreaRef, handleCopyClick, copied, totalShareCoin, claimShareCoin, alertMax } = props
+    const { user, farm, claimCoin, canClaim, showLevelUp, percentComplete, timeLeft, nextClaim, invitedUsers, textAreaRef, handleCopyClick, copied, totalShareCoin, claimShareCoin, alertMax } = props
     const textToCopy = `https://t.me/farming_2024_bot?start=${user.inviteRef}`;
     return (
         <div>
@@ -9,8 +9,19 @@ export default function FarmField(props) {
             <p>Coin: ${farm?.toFixed(4)}</p>
             <p>{(user.farmSpeed * 60).toFixed(4)} xLOTP/hour</p>
             {nextClaim &&
-                <p>Next Claim: {nextClaim.toLocaleString()}</p>
+                <div>
+                    <div>{timeLeft.hours} giờ, {timeLeft.minutes} phút, {timeLeft.seconds} giây</div>
+                    <div>
+                        Thanh % thời gian đã chạy: {percentComplete.toFixed(2)}%
+                        <div style={{ width: '100%', height: '20px', backgroundColor: '#ccc', marginTop: '5px' }}>
+                            <div style={{ width: `${percentComplete}%`, height: '100%', backgroundColor: '#4CAF50' }}></div>
+                        </div>
+                    </div>
+                    <p>Next Claim: {nextClaim.toLocaleString()}</p>
+                </div>
+
             }
+            {canClaim && <><p>You can claim now</p></>}
             <button onClick={claimCoin}>Claim</button>
             <button onClick={showLevelUp}>Level Up</button>
             <p>https://t.me/farming_2024_bot?start={user.inviteRef}</p>

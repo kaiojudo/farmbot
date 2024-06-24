@@ -37,6 +37,7 @@ function App() {
   const [walletAddress, setWalletAddress] = useState(null);
   const [alertMax, setAlertMax] = useState(false);
   const [address, setAddress] = useState(''); // State để lưu địa chỉ ví TON đã kết nối
+  const [canClaim, setCanClaim] = useState(false)
 
   const connectTonWallet = async () => {
     try {
@@ -287,6 +288,7 @@ function App() {
       updateUserData();
       setAlertMax(false);
       UpdateClaimTime();
+      setCanClaim(false);
     } catch (error) {
       alert("Bạn chỉ được claim sau 6 tiêngs")
     }
@@ -525,16 +527,30 @@ function App() {
       console.error('Error connecting to Twitter:', error);
     }
   };
+
+
+
   //Caculator time
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
-
+  const [percentComplete, setPercentComplete] = useState(0);
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft());
-    }, 1000); // cập nhật mỗi giây
+      const timeLeft = calculateTimeLeft();
+      setTimeLeft(timeLeft);
+      const currentTime = +new Date();
+      const elapsedTime = (nextClaim - currentTime);
+      const percentage = (1 - (elapsedTime / (6 * 60 * 60 * 1000))) * 100;
+      setPercentComplete(percentage);
+      if (timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0) {
+        clearInterval(timer);
+      }
+      if (percentage > 99.995) {
+        setCanClaim(true);
+      }
+    }, 1000); // update every second
 
     return () => clearInterval(timer);
-  }, []);
+  }, [nextClaim]);
 
   function calculateTimeLeft() {
     const difference = +new Date(nextClaim) - +new Date();
@@ -592,6 +608,9 @@ function App() {
           totalShareCoin={totalShareCoin}
           claimShareCoin={claimShareCoin}
           alertMax={alertMax}
+          timeLeft={timeLeft}
+          percentComplete={percentComplete}
+          canClaim={canClaim}
         />}
       {showMenuLevelUp && <ShowLevelUp
         user={user}
@@ -611,10 +630,6 @@ function App() {
           claimOfflinePro={claimOfflinePro}
           hideOfflineMenu={hideOfflineMenu}
         />}
-      <div>
-        {timeLeft.hours} giờ, {timeLeft.minutes} phút, {timeLeft.seconds} giây
-      </div>
-      <h1>Welcome to the Telegram Mini App</h1>
       <TonConnectUIProvider
         manifestUrl="https://farmbot-omega.vercel.app/tonconnect-manifest.json" // Thay đổi thành URL manifest thực tế
       >
