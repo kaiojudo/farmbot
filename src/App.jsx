@@ -43,18 +43,19 @@ function App() {
       // Khởi tạo TonClient
       const client = new TonClient({
         network: {
-          server_address: 'main2.ton.dev', // Thay đổi thành mainnet hoặc testnet tùy theo yêu cầu
+          server_address: 'main.ton.dev', // Thay đổi thành mainnet hoặc testnet tùy theo yêu cầu
         },
       });
 
       // Yêu cầu quyền và kết nối tới ví
-      const { result } = await client.crypto.getSigningBox(); // Yêu cầu ví, điều chỉnh theo nhu cầu của bạn
+      await tonClient.setup();
 
-      // Trích xuất địa chỉ ví
-      const walletAddress = result.address;
-
-      // Cập nhật địa chỉ ví vào state
+      // Lấy thông tin ví của người dùng
+      const address = await tonClient.defaultWallet.getAddress();
       setAddress(walletAddress);
+      // Trả về địa chỉ ví để bạn có thể sử dụng cho mục đích khác, ví dụ như hiển thị hoặc lưu trữ
+      return address;
+      // Cập nhật địa chỉ ví vào state
     } catch (error) {
       console.error('Lỗi kết nối ví TON:', error);
     }
