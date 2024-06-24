@@ -503,11 +503,11 @@ function App() {
     try {
       const userId = user.userId;
       let offlineCoin = 0;
-      if (user.totalOfflineTime < 21600 ) {
+      if (user.totalOfflineTime < 21600) {
         offlineCoin = user?.farmSpeed * rankBuff / 60 * user.totalOfflineTime * 1.6;
       }
       else {
-        offlineCoin = user?.farmSpeed * rankBuff / 60 * 21600  * 1.6;
+        offlineCoin = user?.farmSpeed * rankBuff / 60 * 21600 * 1.6;
       }
       const response = await axios.post(`https://pokegram.games/user/${userId}/claimoffline`, { offlineCoin });
       updateData();
@@ -622,7 +622,7 @@ function App() {
         Close WebApp
       </button>
       <CopyText />
-      {(user?.totalOfflineTime + offlineTime > 10 && showOffline) &&
+      {(user?.totalOfflineTime + offlineTime > 600 && showOffline) &&
         <Offline
           user={user}
           rankBuff={rankBuff}
