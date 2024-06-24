@@ -98,9 +98,9 @@ function App() {
           if (userData) {
             setUser(userData);
             const rankMultiplier = getRankMultiplier(userData.rank);
-            if (userData.farm > 21, 600) {
+            if (userData.farm > 21600) {
               setAlertMax(true);
-              setFarm(21, 600 * rankMultiplier * userData.farmSpeed / 60);
+              setFarm(21600 * rankMultiplier * userData.farmSpeed / 60);
             }
             else {
               setFarm(userData.farm * rankMultiplier * userData.farmSpeed / 60);
@@ -311,7 +311,7 @@ function App() {
         intervalRef.current = setInterval(() => {
           setFarm(prevFarm => {
             const newFarm = prevFarm + (user.farmSpeed * response.data.rank_buff / 60);
-            const maxFarm = (user.farmSpeed * response.data.rank_buff) / 6 * 10;
+            const maxFarm = (user.farmSpeed * response.data.rank_buff) * 60 * 6 * 60;
             if (newFarm < maxFarm)
               return newFarm;
             setAlertMax(true);
