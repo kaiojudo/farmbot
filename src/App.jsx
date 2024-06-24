@@ -53,9 +53,7 @@ function App() {
       // Lấy thông tin ví của người dùng
       const address = await tonClient.defaultWallet.getAddress();
       setAddress(walletAddress);
-      // Trả về địa chỉ ví để bạn có thể sử dụng cho mục đích khác, ví dụ như hiển thị hoặc lưu trữ
       return address;
-      // Cập nhật địa chỉ ví vào state
     } catch (error) {
       console.error('Lỗi kết nối ví TON:', error);
     }
@@ -527,6 +525,31 @@ function App() {
       console.error('Error connecting to Twitter:', error);
     }
   };
+  //Caculator time
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000); // cập nhật mỗi giây
+
+    return () => clearInterval(timer);
+  }, []);
+
+  function calculateTimeLeft() {
+    const difference = +new Date(nextClaim) - +new Date();
+    let timeLeft = {};
+
+    if (difference > 0) {
+      timeLeft = {
+        hours: Math.floor(difference / (1000 * 60 * 60)),
+        minutes: Math.floor((difference / (1000 * 60)) % 60),
+        seconds: Math.floor((difference / 1000) % 60)
+      };
+    }
+
+    return timeLeft;
+  }
 
   return (
 
@@ -588,6 +611,9 @@ function App() {
           claimOfflinePro={claimOfflinePro}
           hideOfflineMenu={hideOfflineMenu}
         />}
+      <div>
+        {timeLeft.hours} giờ, {timeLeft.minutes} phút, {timeLeft.seconds} giây
+      </div>
       <h1>Welcome to the Telegram Mini App</h1>
       <TonConnectUIProvider
         manifestUrl="https://farmbot-omega.vercel.app/tonconnect-manifest.json" // Thay đổi thành URL manifest thực tế
