@@ -13,6 +13,7 @@ import CopyText from './components/CopyText';
 import Offline from './components/Offline';
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
 import TonConnectComponent from './components/TonConnectComponent';
+import LinkTwitter from './components/LinkTwitter';
 function App() {
   const intervalRef = useRef(null);
   const [user, setUser] = useState(null);
@@ -638,7 +639,7 @@ function App() {
           <TonConnectComponent connectTonWallet={connectTonWallet} address={address} />
         </div>
       </TonConnectUIProvider>
-
+      <LinkTwitter />
     </div>
 
   );
