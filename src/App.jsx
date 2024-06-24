@@ -98,9 +98,9 @@ function App() {
           if (userData) {
             setUser(userData);
             const rankMultiplier = getRankMultiplier(userData.rank);
-            if (userData.farm > 100) {
+            if (userData.farm > 21, 600) {
               setAlertMax(true);
-              setFarm(100 * rankMultiplier * userData.farmSpeed / 60);
+              setFarm(21, 600 * rankMultiplier * userData.farmSpeed / 60);
             }
             else {
               setFarm(userData.farm * rankMultiplier * userData.farmSpeed / 60);
@@ -632,7 +632,7 @@ function App() {
           hideOfflineMenu={hideOfflineMenu}
         />}
       <TonConnectUIProvider
-        manifestUrl="https://farmbot-omega.vercel.app/tonconnect-manifest.json" 
+        manifestUrl="https://farmbot-omega.vercel.app/tonconnect-manifest.json"
       >
         <div>
           <TonConnectComponent connectTonWallet={connectTonWallet} address={address} />
