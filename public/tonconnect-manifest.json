@@ -1,9 +1,8 @@
 {
-  "name": "TeleApp",
-  "version": "1.0.0",
-  "description": "Description of YourApp",
-  "icon": "https://farmbot-omega.vercel.app/icon.jpg",
-  "connect": {
-    "permissions": ["net.ton.dev"]
-  }
+  "name": "My TON Wallet App",
+  "description": "A description of your TON Wallet app",
+  "url": "https://farmbot-omega.vercel.app",
+  "icons": [
+    "https://farmbot-omega.vercel.app/icon.png"
+  ]
 }
