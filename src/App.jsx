@@ -208,11 +208,19 @@ function App() {
           }
           const fetchInvitedUsers = async () => {
             try {
-              const res = await axios.get(`https://pokegram.games/inviteUser/search`, { userId });
+              const res = await axios.get(`https://pokegram.games/inviteUser/search`, {
+                params: {
+                  userId: userId
+                }
+              });
               if (res.data != 0) {
                 setInvitedUsers(res.data);
                 // console.log(invitedUsers);
-                const resp = await axios.get(`https://pokegram.games/user/totalShareCoin`, { userId });
+                const resp = await axios.get(`https://pokegram.games/user/totalShareCoin`, {
+                  params: {
+                    userId: userId
+                  }
+                });
                 if (resp.data.totalShareCoin) {
                   setTotalShareCoin(resp.data.totalShareCoin);
                 }
@@ -247,7 +255,11 @@ function App() {
   const updateData = () => {
     const tg = window.Telegram?.WebApp;
     const userId = tg.initDataUnsafe?.user.id;
-    axios.get(`https://pokegram.games/user`, { userId })
+    axios.get(`https://pokegram.games/user`, {
+      params: {
+        userId: userId
+      }
+    })
       .then(
         response => {
           setUser(response?.data);
@@ -267,11 +279,19 @@ function App() {
           setUser(response?.data);
           const fetchInvitedUsers = async () => {
             try {
-              const res = await axios.get(`https://pokegram.games/inviteUser/search`, { userId });
+              const res = await axios.get(`https://pokegram.games/inviteUser/search`, {
+                params: {
+                  userId: userId
+                }
+              });
               if (res.data != 0) {
                 setInvitedUsers(res.data);
                 // console.log(invitedUsers);
-                axios.get(`https://pokegram.games/user/totalShareCoin`, { userId })
+                axios.get(`https://pokegram.games/user/totalShareCoin`, {
+                  params: {
+                    userId: userId
+                  }
+                })
                   .then(
                     response => {
                       if (response.data.totalShareCoin) {
