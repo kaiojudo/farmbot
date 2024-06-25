@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default function FarmField(props) {
-    const { user, farm, claimCoin, canClaim, showLevelUp, percentComplete, timeLeft, nextClaim, invitedUsers, textAreaRef, handleCopyClick, copied, totalShareCoin, claimShareCoin, alertMax } = props
+    const { user, farm, isDisable, claimCoin, canClaim, showLevelUp, percentComplete, timeLeft, nextClaim, invitedUsers, textAreaRef, handleCopyClick, copied, totalShareCoin, claimShareCoin, alertMax } = props
     const textToCopy = `https://t.me/farming_2024_bot?start=${user.inviteRef}`;
     return (
         <div>
@@ -22,7 +22,7 @@ export default function FarmField(props) {
 
             }
             {canClaim && <><p>You can claim now</p></>}
-            <button onClick={claimCoin}>Claim</button>
+            <button onClick={claimCoin} disabled={isDisable}>Claim</button>
             <button onClick={showLevelUp}>Level Up</button>
             <p>https://t.me/farming_2024_bot?start={user.inviteRef}</p>
             <textarea
