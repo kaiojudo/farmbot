@@ -302,7 +302,7 @@ function App() {
   const farmingStartedRef = useRef(false); // Thêm cờ để kiểm soát việc bắt đầu farming
 
   const startFarming = async () => {
-    if (user && !intervalRef.current && !farmingStartedRef.current && !alertMax) {
+    if (user && !intervalRef.current && !farmingStartedRef.current && !alertMax && !canClaim) {
       farmingStartedRef.current = true; // Đặt cờ để đảm bảo chỉ chạy một lần
       try {
         const response = await axios.get(`https://pokegram.games/rank/${user.rank}`);
