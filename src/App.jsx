@@ -187,49 +187,54 @@ function App() {
   };
   useEffect(() => {
     fetchUser()
-  }, [])
+  }, [userId])
   const fetchUser = () => {
-    if (userId) {
-      axios.get(`https://pokegram.games/user/`, { userId })
-        .then(
-          response => {
-            setUser(response?.data);
-            const userData = response?.data;
-            if (userData.lastClaimTime) {
-              const lastClaimTime = new Date(userData.lastClaimTime);
-              const nextClaimTime = new Date(lastClaimTime.getTime() + 6 * 60 * 60 * 1000); // Cộng thêm 6 tiếng
-              setNextClaim(nextClaimTime);
-            }
-            const fetchInvitedUsers = async () => {
-              try {
-                const res = await axios.get(`https://pokegram.games/inviteUser/search`, { userId });
-                if (res.data != 0) {
-                  setInvitedUsers(res.data);
-                  // console.log(invitedUsers);
-                  const resp = await axios.get(`https://pokegram.games/user/totalShareCoin`, { userId });
-                  if (resp.data.totalShareCoin) {
-                    setTotalShareCoin(resp.data.totalShareCoin);
-                  }
-                }
-                if (user.lastClaimTime) {
-                  const lastClaimTime = new Date();
-                  const nextClaimTime = new Date(lastClaimTime.getTime() + 6 * 60 * 60 * 1000); // Cộng thêm 6 tiếng
-                  setNextClaim(nextClaimTime);
-                }
-              } catch (error) {
-
-              }
-            };
-            fetchInvitedUsers();
-            if (userId) {
-              checkMemberships(userId);
-            }
+    const userId = tg.initDataUnsafe?.user.id;
+    axios.get(`https://pokegram.games/user`,
+      {
+        params: {
+          userId: userId
+        }
+      })
+      .then(
+        response => {
+          console.log(response);
+          setUser(response?.data);
+          const userData = response?.data;
+          if (userData.lastClaimTime) {
+            const lastClaimTime = new Date(userData.lastClaimTime);
+            const nextClaimTime = new Date(lastClaimTime.getTime() + 6 * 60 * 60 * 1000); // Cộng thêm 6 tiếng
+            setNextClaim(nextClaimTime);
           }
-        )
-        .finally(
-          setLoading(true)
-        )
-    }
+          const fetchInvitedUsers = async () => {
+            try {
+              const res = await axios.get(`https://pokegram.games/inviteUser/search`, { userId });
+              if (res.data != 0) {
+                setInvitedUsers(res.data);
+                // console.log(invitedUsers);
+                const resp = await axios.get(`https://pokegram.games/user/totalShareCoin`, { userId });
+                if (resp.data.totalShareCoin) {
+                  setTotalShareCoin(resp.data.totalShareCoin);
+                }
+              }
+              if (user.lastClaimTime) {
+                const lastClaimTime = new Date();
+                const nextClaimTime = new Date(lastClaimTime.getTime() + 6 * 60 * 60 * 1000); // Cộng thêm 6 tiếng
+                setNextClaim(nextClaimTime);
+              }
+            } catch (error) {
+
+            }
+          };
+          fetchInvitedUsers();
+          if (userId) {
+            checkMemberships(userId);
+          }
+        }
+      )
+      .finally(
+        setLoading(true)
+      )
   }
   //Claim Share Coin
   const claimShareCoin = async () => {
