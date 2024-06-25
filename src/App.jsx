@@ -39,7 +39,7 @@ function App() {
   const [alertMax, setAlertMax] = useState(false);
   const [address, setAddress] = useState('');
   const [canClaim, setCanClaim] = useState(false)
-  const [isDisable, setIsDisable] = useEffect(false);
+  const [isDisable, setIsDisable] = useState(true);
 
   const tg = window.Telegram.WebApp;
   const userId = tg.initDataUnsafe?.user.id;
@@ -546,7 +546,7 @@ function App() {
       if (percentage > 99.995) {
         setCanClaim(true);
         setPercentComplete(100);
-        setIsDisable(true);
+        setIsDisable(false);
       }
       else {
         setPercentComplete(percentage);
