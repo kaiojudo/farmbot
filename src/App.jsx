@@ -83,6 +83,7 @@ function App() {
 
   //Websocket
   useEffect(() => {
+    const userId = tg.initDataUnsafe?.user.id;
     const ws = new WebSocket('wss://websocket.pokegram.games');
     ws.onopen = () => {
       console.log('Connected to WebSocket server');
@@ -91,7 +92,7 @@ function App() {
       // Cập nhật thời gian truy cập khi người dùng mở Mini App
       const updateLoginTime = async () => {
         try {
-          const response = await axios.post(`https://pokegram.games/user/login`, userId);
+          const response = await axios.post(`https://pokegram.games/user/login`, { userId });
           console.log('Login time updated:', response.data.timeLogIn);
           if (response.data.offlineTime !== null) {
             setOfflineTime(response.data.offlineTime);
