@@ -542,13 +542,17 @@ function App() {
       const currentTime = +new Date();
       const elapsedTime = (nextClaim - currentTime);
       const percentage = (1 - (elapsedTime / (6 * 60 * 60 * 1000))) * 100;
-      setPercentComplete(percentage);
+      if (percentage > 99.995) {
+        setCanClaim(true);
+        setPercentComplete(100);
+      }
+      else {
+        setPercentComplete(percentage);
+      }
       if (timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0) {
         clearInterval(timer);
       }
-      if (percentage > 99.995) {
-        setCanClaim(true);
-      }
+
     }, 1000); // update every second
 
     return () => clearInterval(timer);
