@@ -292,6 +292,7 @@ function App() {
       setAlertMax(false);
       UpdateClaimTime();
       setCanClaim(false);
+      setIsDisable(true);
     } catch (error) {
       alert("Bạn chỉ được claim sau 6 tiêngs")
     }
