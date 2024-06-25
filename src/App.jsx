@@ -257,7 +257,11 @@ function App() {
   const updateUserData = () => {
     const tg = window.Telegram?.WebApp;
     const userId = tg.initDataUnsafe?.user.id;
-    axios.get(`https://pokegram.games/user`, { userId })
+    axios.get(`https://pokegram.games/user`, {
+      params: {
+        userId: userId
+      }
+    })
       .then(
         response => {
           setUser(response?.data);
