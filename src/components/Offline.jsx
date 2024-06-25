@@ -9,7 +9,7 @@ export default function Offline(props) {
         <div className='offline'>
             <h1>Offline</h1>
             <p>You have been offline for {offlineTime} second</p>
-            <p>{(offlineTime + user.totalOfflineTime) < 21600 ? (user?.farmSpeed * rankBuff / 60 * (offlineTime + user.totalOfflineTime) * 0.7) : (user?.farmSpeed * rankBuff / 60 * 40 * 0.7)}</p>
+            <p>{(offlineTime + user.totalOfflineTime) < 21600 ? (user?.farmSpeed * rankBuff / 60 * (offlineTime + user.totalOfflineTime) * 0.7) : (user?.farmSpeed * rankBuff / 60 * 21600 * 0.7)}</p>
             <div className='claim-button'>
                 <button className='claim' onClick={claimOffline}>Claim</button>
                 <button className='claimPro' onClick={claimOfflinePro}>Claim x 160%</button>
