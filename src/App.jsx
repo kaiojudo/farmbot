@@ -541,7 +541,7 @@ function App() {
       setTimeLeft(timeLeft);
       const currentTime = +new Date();
       const elapsedTime = (nextClaim - currentTime);
-      const percentage = (1 - (elapsedTime / (6 * 60 * 60 * 1000))) * 100;
+      const percentage = (1 - (elapsedTime / (6 * 1000))) * 100;
       if (percentage > 99.995) {
         setCanClaim(true);
         setPercentComplete(100);
