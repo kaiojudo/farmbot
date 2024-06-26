@@ -509,7 +509,8 @@ function App() {
     if (response.data.message == 1) {
       setClaimQ(false);
       message.success(`Bạn nhận thưởng thành công!`);
-      updateUserData()
+      updateUserData();
+      startFarming();
     }
     else {
       message.error(`Bạn nhận chưa hoàn thành quest!`);
