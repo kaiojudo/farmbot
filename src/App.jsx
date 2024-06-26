@@ -40,6 +40,7 @@ function App() {
   const [address, setAddress] = useState('');
   const [canClaim, setCanClaim] = useState(false)
   const [isDisable, setIsDisable] = useState(true);
+  const [coin, setCoin] = useState(0);
 
   const tg = window.Telegram.WebApp;
   const userId = tg.initDataUnsafe?.user.id;
@@ -100,6 +101,7 @@ function App() {
           const userData = response?.data.user;
           if (userData) {
             setUser(userData);
+            setCoin(userData.coin);
             const rankMultiplier = getRankMultiplier(userData.rank);
             if (userData.farm > 21600) {
               setAlertMax(true);
@@ -508,8 +510,9 @@ function App() {
     const response = await axios.post(`https://pokegram.games/user/updateQuest`, { userId });
     if (response.data.message == 1) {
       setClaimQ(false);
+      setCoin(coin + 2);
       message.success(`Bạn nhận thưởng thành công!`);
-      setFarm(farm + 2);
+
     }
     else {
       message.error(`Bạn nhận chưa hoàn thành quest!`);
@@ -618,6 +621,7 @@ function App() {
         setTonWallet={setTonWallet}
         loading={loading}
         showMenuQuest={showMenuQuest}
+        coin={coin}
       />
       <button onClick={showMenuQuest}>Quest</button>
       {quest && <Quest
