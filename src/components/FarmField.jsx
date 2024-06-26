@@ -36,7 +36,7 @@ export default function FarmField(props) {
             </button>
             {invitedUsers.length > 0 && (<>
                 <h2>Invited Users</h2>
-                <p>{totalShareCoin}</p>
+                <p>{totalShareCoin.toFixed(4)}</p>
                 <button onClick={claimShareCoin}>Claim Share Coin</button>
                 <ul className='show-invite'>
                     <li>
