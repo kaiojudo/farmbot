@@ -344,7 +344,6 @@ function App() {
         }
 
         intervalRef.current = setInterval(() => {
-          console.log('farm');
           setFarm(prevFarm => {
             const newFarm = prevFarm + (user.farmSpeed * response.data.rank_buff / 60);
             const maxFarm = (user.farmSpeed * response.data.rank_buff) * 60 * 6 * 60;
@@ -357,9 +356,9 @@ function App() {
       } catch (error) {
         console.error('Failed to fetch rank:', error);
       }
-      return 'Farming started'; // Trả về một giá trị để xác nhận rằng hàm đã chạy thành công
+      return 'Farming started'; 
     }
-    return 'Farming not started'; // Hoặc trả về một giá trị khác để chỉ ra rằng hàm không chạy được
+    return 'Farming not started'; 
   };
 
   const handleStartFarming = async () => {
@@ -368,15 +367,14 @@ function App() {
   };
 
   useEffect(() => {
-    if (user?.farm >= 0 && !intervalRef.current && !farmingStartedRef.current) { // Kiểm tra kỹ lưỡng
+    if (user?.farm >= 0 && !intervalRef.current && !farmingStartedRef.current) { 
       handleStartFarming();
     }
-    // Xóa bỏ interval khi component được unmount hoặc khi user thay đổi
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
-        farmingStartedRef.current = false; // Reset cờ khi component unmount hoặc user thay đổi
+        farmingStartedRef.current = false; 
       }
     };
   }, [user]);
