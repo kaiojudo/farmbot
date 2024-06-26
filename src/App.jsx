@@ -356,9 +356,9 @@ function App() {
       } catch (error) {
         console.error('Failed to fetch rank:', error);
       }
-      return 'Farming started'; 
+      return 'Farming started';
     }
-    return 'Farming not started'; 
+    return 'Farming not started';
   };
 
   const handleStartFarming = async () => {
@@ -367,14 +367,14 @@ function App() {
   };
 
   useEffect(() => {
-    if (user?.farm >= 0 && !intervalRef.current && !farmingStartedRef.current) { 
+    if (user?.farm >= 0 && !intervalRef.current && !farmingStartedRef.current) {
       handleStartFarming();
     }
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
-        farmingStartedRef.current = false; 
+        farmingStartedRef.current = false;
       }
     };
   }, [user]);
