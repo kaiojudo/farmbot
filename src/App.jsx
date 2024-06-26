@@ -342,14 +342,15 @@ function App() {
         if (response.data) {
           setrankBuff(response.data.rank_buff);
         }
+
         intervalRef.current = setInterval(() => {
+          console.log('farm');
           setFarm(prevFarm => {
             const newFarm = prevFarm + (user.farmSpeed * response.data.rank_buff / 60);
             const maxFarm = (user.farmSpeed * response.data.rank_buff) * 60 * 6 * 60;
             if (newFarm < maxFarm)
               return newFarm;
             setAlertMax(true);
-            console.log('farm');
             return maxFarm;
           });
         }, 1000);
