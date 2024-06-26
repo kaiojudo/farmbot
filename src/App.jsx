@@ -520,6 +520,8 @@ function App() {
       const response = await axios.post(`https://pokegram.games/user/claimoffline`, { userId, offlineCoin });
       updateData();
       hideOfflineMenu();
+      setCoin(coin + offlineCoin);
+
     } catch (error) {
       console.log(error);
     }
@@ -537,6 +539,8 @@ function App() {
       const response = await axios.post(`https://pokegram.games/user/claimoffline`, { userId, offlineCoin });
       updateData();
       hideOfflineMenu();
+      setCoin(coin + offlineCoin);
+
     } catch (error) {
       alert("Bạn chỉ được claim sau 6 hours")
     }
