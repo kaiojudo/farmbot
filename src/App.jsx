@@ -210,7 +210,7 @@ function App() {
             try {
               const res = await axios.get(`https://pokegram.games/inviteUser/search`, {
                 params: {
-                  invitedUsers: userId
+                  inviterId: userId
                 }
               });
               if (res.data != 0) {
@@ -218,7 +218,7 @@ function App() {
                 // console.log(invitedUsers);
                 const resp = await axios.get(`https://pokegram.games/user/totalShareCoin`, {
                   params: {
-                    invitedUsers: userId
+                    inviterId: userId
                   }
                 });
                 if (resp.data.totalShareCoin) {
