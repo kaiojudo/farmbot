@@ -517,7 +517,7 @@ function App() {
       else {
         offlineCoin = user?.farmSpeed * rankBuff / 60 * 21600 * 0.7;
       }
-      const response = await axios.post(`https://pokegram.games/user/claimoffline`, { userId, offlineCoin });
+      const response = await axios.post(`https://pokegram.games/user/claimoffline`, { userId });
       updateData();
       hideOfflineMenu();
       setCoin(coin + offlineCoin);
