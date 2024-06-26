@@ -318,7 +318,7 @@ function App() {
   //Claim Coin
   const claimCoin = async () => {
     try {
-      const response = await axios.post(`https://pokegram.games/user/claim`, { userId, farm });
+      const response = await axios.post(`https://pokegram.games/user/claim`, { userId });
       setFarm(0);
       startFarming();
       setCoin(coin + farm);
