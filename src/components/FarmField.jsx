@@ -36,7 +36,7 @@ export default function FarmField(props) {
             </button>
             {invitedUsers.length > 0 && (<>
                 <h2>Invited Users</h2>
-                <p>{totalShareCoin}</p>
+                <p>~{totalShareCoin.toFixed(4)}</p>
                 <button onClick={claimShareCoin}>Claim Share Coin</button>
                 <ul className='show-invite'>
                     <li>
@@ -48,7 +48,7 @@ export default function FarmField(props) {
                         <li key={user._id}>
                             <p>{user.username}</p>
                             <p>{new Date(user.dateCreate).toLocaleString().split(',')[0]}</p>
-                            <p>{user.totalShareCoin}</p>
+                            <p>~{user.totalShareCoin.toFixed(4)}</p>
                         </li>
                     ))}
                 </ul>
