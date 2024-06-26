@@ -399,18 +399,6 @@ function App() {
       console.error('Failed to level up:', error);
     }
   };
-  const logout = async () => {
-    try {
-      const userId = user.userId; // Thay thế bằng userId thực tế
-      const response = await axios.post(`https://pokegram.games/user/logout`, { userId, farm });
-      console.log('User logged out:', response.data);
-      if (window.Telegram?.WebApp) {
-        window.Telegram.WebApp.close();
-      }
-    } catch (error) {
-      console.error('Failed to logout:', error);
-    }
-  };
   const handleLogoutClick = () => {
     confirmAlert({
       title: 'Confirm to logout',
