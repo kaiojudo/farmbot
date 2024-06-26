@@ -349,6 +349,7 @@ function App() {
             if (newFarm < maxFarm)
               return newFarm;
             setAlertMax(true);
+            console.log('farm');
             return maxFarm;
           });
         }, 1000);
@@ -508,7 +509,6 @@ function App() {
     const response = await axios.post(`https://pokegram.games/user/updateQuest`, { userId });
     if (response.data.message == 1) {
       setClaimQ(false);
-      startFarming();
       message.success(`Bạn nhận thưởng thành công!`);
       updateUserData();
     }
