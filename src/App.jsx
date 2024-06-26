@@ -508,9 +508,9 @@ function App() {
     const response = await axios.post(`https://pokegram.games/user/updateQuest`, { userId });
     if (response.data.message == 1) {
       setClaimQ(false);
+      startFarming();
       message.success(`Bạn nhận thưởng thành công!`);
       updateUserData();
-      startFarming();
     }
     else {
       message.error(`Bạn nhận chưa hoàn thành quest!`);
