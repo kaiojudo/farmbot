@@ -325,7 +325,7 @@ function App() {
       setCanClaim(false);
       setIsDisable(true);
     } catch (error) {
-      alert("Bạn chỉ được claim sau 6 tiêngs")
+      alert("Bạn chỉ được claim sau 6 tiếng")
     }
   };
   //show Menu Quest
@@ -509,7 +509,7 @@ function App() {
     if (response.data.message == 1) {
       setClaimQ(false);
       message.success(`Bạn nhận thưởng thành công!`);
-      updateUserData();
+      updateData();
     }
     else {
       message.error(`Bạn nhận chưa hoàn thành quest!`);
