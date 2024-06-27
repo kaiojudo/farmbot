@@ -325,6 +325,7 @@ function App() {
       setAlertMax(false);
       UpdateClaimTime();
       setCanClaim(false);
+      farmingStartedRef.current = false; // Đặt cờ để đảm bảo chỉ chạy một lần
       setIsDisable(true);
     } catch (error) {
       alert("Bạn chỉ được claim sau 6 tiếng")
@@ -337,9 +338,6 @@ function App() {
   const farmingStartedRef = useRef(false); // Thêm cờ để kiểm soát việc bắt đầu farming
 
   const startFarming = async () => {
-    console.log(intervalRef.current);
-    console.log(farmingStartedRef.current);
-    console.log(alertMax);
     if (user && !intervalRef.current && !farmingStartedRef.current && !alertMax) {
       farmingStartedRef.current = true; // Đặt cờ để đảm bảo chỉ chạy một lần
       try {
