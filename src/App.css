@@ -113,3 +113,7 @@ button:focus-visible {
 .ton{
     padding: 20px 0;
 }
+.farm{
+    color: red;
+    font-weight: bold;
+}

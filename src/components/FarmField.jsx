@@ -6,7 +6,7 @@ export default function FarmField(props) {
     return (
         <div>
             {alertMax && <p className='alertFull'>Full Coin, Please Claim</p>}
-            <p>Coin: ${farm?.toFixed(4)}</p>
+            <p className='farm'>Coin: ${farm?.toFixed(4)}</p>
             <p>{(user.farmSpeed * 60).toFixed(4)} xLOTP/hour</p>
             {nextClaim &&
                 <div>
