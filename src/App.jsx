@@ -413,6 +413,7 @@ function App() {
         message.success(`Bạn nâng cấp lên level ${user?.level + 1} thành công!`);
         updateData();
         hideLevelUp();
+        setCoin(coin - user.cost)
       }
       else {
         alert("Not Enough Money")
