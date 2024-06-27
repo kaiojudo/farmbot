@@ -250,7 +250,7 @@ function App() {
   const claimShareCoin = async () => {
     const res = await axios.post(`https://pokegram.games/user/claimShareCoin`, { inviterId: userId })
     setTotalShareCoin(0);
-    setCoin(coin + farm);
+    setCoin(coin + totalShareCoin);
     setNextClaim(user.nextClaimTime);
 
   }
@@ -403,8 +403,6 @@ function App() {
       }
     };
   }, [user]);
-
-
   const levelUp = async () => {
     try {
       const userId = user?.userId;
