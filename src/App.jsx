@@ -320,7 +320,7 @@ function App() {
     try {
       const response = await axios.post(`https://pokegram.games/user/claim`, { userId });
       setFarm(0);
-      startFarming();
+      handleVisibilityChange();
       setCoin(coin + farm);
       setAlertMax(false);
       UpdateClaimTime();
