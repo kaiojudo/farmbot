@@ -337,7 +337,9 @@ function App() {
   const farmingStartedRef = useRef(false); // Thêm cờ để kiểm soát việc bắt đầu farming
 
   const startFarming = async () => {
-    console.log("Bug");
+    console.log(intervalRef.current);
+    console.log(farmingStartedRef.current);
+    console.log(alertMax);
     if (user && !intervalRef.current && !farmingStartedRef.current && !alertMax) {
       farmingStartedRef.current = true; // Đặt cờ để đảm bảo chỉ chạy một lần
       try {
