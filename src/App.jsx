@@ -335,6 +335,11 @@ function App() {
           return maxFarm;
         });
       }, 1000);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+        farmingStartedRef.current = false;
+      }
       setCoin(coin + farm);
       setAlertMax(false);
       UpdateClaimTime();
