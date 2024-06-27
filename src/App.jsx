@@ -603,8 +603,6 @@ function App() {
           setPercentComplete(percentage);
         }
       }
-
-
       if (timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0) {
         clearInterval(timer);
       }
