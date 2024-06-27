@@ -320,7 +320,21 @@ function App() {
     try {
       const response = await axios.post(`https://pokegram.games/user/claim`, { userId });
       setFarm(0);
-      handleStartFarming();
+      const response2 = await axios.get(`https://pokegram.games/rank/${user.rank}`);
+      if (response2.data) {
+        setrankBuff(response.data.rank_buff);
+      }
+
+      intervalRef.current = setInterval(() => {
+        setFarm(prevFarm => {
+          const newFarm = prevFarm + (user.farmSpeed * response2.data.rank_buff / 60);
+          const maxFarm = (user.farmSpeed * response2.data.rank_buff) * 60 * 6 * 60;
+          if (newFarm < maxFarm)
+            return newFarm;
+          setAlertMax(true);
+          return maxFarm;
+        });
+      }, 1000);
       setCoin(coin + farm);
       setAlertMax(false);
       UpdateClaimTime();
@@ -338,6 +352,9 @@ function App() {
   const farmingStartedRef = useRef(false); // Thêm cờ để kiểm soát việc bắt đầu farming
 
   const startFarming = async () => {
+    console.log(intervalRef.current);
+    console.log(farmingStartedRef.current);
+    console.log(alertMax);
     if (user && !intervalRef.current && !farmingStartedRef.current && !alertMax) {
       farmingStartedRef.current = true; // Đặt cờ để đảm bảo chỉ chạy một lần
       try {
