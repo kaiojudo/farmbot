@@ -337,7 +337,7 @@ function App() {
   const farmingStartedRef = useRef(false); // Thêm cờ để kiểm soát việc bắt đầu farming
 
   const startFarming = async () => {
-    if (user && !intervalRef.current && !farmingStartedRef.current && !alertMax && !canClaim) {
+    if (user && !intervalRef.current && !farmingStartedRef.current && !alertMax) {
       farmingStartedRef.current = true; // Đặt cờ để đảm bảo chỉ chạy một lần
       try {
         const response = await axios.get(`https://pokegram.games/rank/${user.rank}`);
@@ -569,15 +569,24 @@ function App() {
       setTimeLeft(timeLeft);
       const currentTime = +new Date();
       const elapsedTime = (nextClaim - currentTime);
-      const percentage = (1 - (elapsedTime / (6 * 60 * 60 * 1000))) * 100;
-      if (percentage > 99.995) {
-        setCanClaim(true);
+      if (elapsedTime <= 0) {
         setPercentComplete(100);
+        setCanClaim(true);
         setIsDisable(false);
       }
       else {
-        setPercentComplete(percentage);
+        const percentage = (1 - (elapsedTime / (6 * 60 * 60 * 1000))) * 100;
+        if (percentage > 99.995) {
+          setCanClaim(true);
+          setPercentComplete(100);
+          setIsDisable(false);
+        }
+        else {
+          setPercentComplete(percentage);
+        }
       }
+
+
       if (timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0) {
         clearInterval(timer);
       }
