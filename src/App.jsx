@@ -571,13 +571,7 @@ function App() {
     setShowOffline(false);
   }
   const connectTwitter = async () => {
-    try {
-      const response = await axios.get('https://pokegram.games/api/twitter/auth');
-      const data = await response.json();
-      // Handle response from server
-    } catch (error) {
-      console.error('Error connecting to Twitter:', error);
-    }
+    window.location.href = 'https://pokegram.games/auth/twitter';
   };
 
 
