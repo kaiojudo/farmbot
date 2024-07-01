@@ -14,6 +14,7 @@ import Offline from './components/Offline';
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
 import TonConnectComponent from './components/TonConnectComponent';
 import LinkTwitter from './components/LinkTwitter';
+import Home from './components/Home';
 function App() {
   const intervalRef = useRef(null);
   const [user, setUser] = useState(null);
@@ -698,6 +699,7 @@ function App() {
         </div>
       </TonConnectUIProvider>
       <LinkTwitter />
+      <Home />
     </div>
 
   );

@@ -1,0 +1,225 @@
+.home {
+    position: relative;
+    width: 390px;
+    height: 844px;
+    background: #060C26;
+    padding: -16px;
+}
+
+p {
+    margin: 0;
+}
+
+.background {
+    background: linear-gradient(#2D2D2D, #5765A8, #70914C);
+    /* Màu gradient từ #ff7e5f đến #feb47b */
+    height: 100vh;
+    /* Chiều cao của phần tử, bạn có thể thay đổi tùy vào mục đích sử dụng */
+    width: 100%;
+}
+
+.total-money {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    gap: 65px;
+    width: 358px;
+    height: 80px;
+    left: calc(50% - 358px/2);
+    top: 71px;
+    background: rgba(255, 255, 255, 0.1);
+    /* background blur 24 */
+    backdrop-filter: blur(12px);
+    /* Note: backdrop-filter has minimal browser support */
+    border-radius: 16px;
+    margin: auto;
+
+}
+
+.icon {
+    display: flex;
+    justify-content: space-between;
+    width: 167px;
+    height: 48px;
+    margin: 8px;
+}
+
+.icon p {
+    margin: 0;
+}
+
+.frame-3>div {
+    width: 100%;
+}
+
+.icon img,
+.frame-3 img {
+    width: 32px;
+    height: 32px;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+
+}
+
+.d-flex {
+    display: flex;
+}
+
+.jcs {
+    justify-content: space-between
+}
+
+.total-coin {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 4px;
+    width: 119px;
+    height: 48px;
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+    color: #fff;
+
+}
+
+.total-coin p {
+    width: 70px;
+    height: 18px;
+    font-family: 'Proxima Nova';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 18px;
+    display: flex;
+    align-items: center;
+    color: #fff;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+.total-coin .coin {
+    font-size: 20px;
+    height: 26px;
+}
+
+.total-coin .eth {
+    font-size: 12px;
+    margin-left: 5px;
+    height: 12px;
+}
+
+.send button {
+    width: 69px;
+    height: 38px;
+    padding: 8px 16px 8px 16px;
+    background-color: #FFFFFF;
+    border-radius: 12px;
+    border: none;
+
+}
+
+.send button {
+    margin-right: 8px;
+}
+
+.ar {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+
+.arbx-balance,
+.arb-balance {
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    height: 120px;
+    width: 171px;
+    border-radius: 16px;
+    padding: 8px;
+}
+
+.frame-3 {
+    /* Frame 3 */
+
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+    width: 139px;
+    height: 88px;
+    /* Inside auto layout */
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+
+}
+
+.frame-3 button {
+    padding: 6px 12px 6px 12px;
+    border-radius: 12px;
+    border: none;
+    width: 57px;
+    height: 32px;
+}
+
+.bsl {
+    box-shadow: 1px 1px 16px 16px rgba(157, 157, 157, 0.25);
+}
+
+.p1 {
+    margin-top: 8px;
+}
+
+.frame-3 .p1,
+span {
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 18px;
+    height: 18px;
+}
+
+.frame-3 .p2 {
+    font-size: 20px;
+    font-weight: 500;
+    height: 26px;
+    line-height: 26px;
+    color: #fff;
+}
+
+.mining-art {
+    margin: 8px 8px;
+
+}
+.mining-art .frame{
+    position: relative;
+    padding: 32px 0;
+}
+.mining-art .img-fr {
+    width: 390px;
+    height: 253px;
+    background-color: inherit;
+    position: absolute;
+    z-index: 0;
+}
+
+.mining-art .img-gr {
+    position: absolute;
+    left: 38.97%;
+    right: 35.03%;
+    top: 0%;
+    bottom: 38.52%;
+    z-index: 1;
+}
