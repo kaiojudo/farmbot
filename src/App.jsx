@@ -91,35 +91,7 @@ function App() {
       console.log('Connected to WebSocket server');
       ws.send(JSON.stringify({ type: 'login', userId }));
 
-      // Cập nhật thời gian truy cập khi người dùng mở Mini App
-      const updateLoginTime = async () => {
-        try {
-          const response = await axios.post(`https://pokegram.games/user/login`, { userId });
-          console.log('Login time updated:', response.data.timeLogIn);
-          if (response.data.offlineTime !== null) {
-            setOfflineTime(response.data.offlineTime);
-          }
-          const userData = response?.data.user;
-          if (userData) {
-            setUser(userData);
-            setCoin(userData.coin);
-            const rankMultiplier = getRankMultiplier(userData.rank);
-            if (userData.farm > 21600) {
-              setAlertMax(true);
-              setFarm(21600 * rankMultiplier * userData.farmSpeed / 60);
-            }
-            else {
-              setFarm(userData.farm * rankMultiplier * userData.farmSpeed / 60);
-            }
-          } else {
-            console.error('No user data received');
-          }
-
-        } catch (error) {
-          console.error('Error updating login time:', error);
-        }
-      };
-      updateLoginTime();
+    
     };
 
     ws.onclose = () => {
@@ -134,22 +106,7 @@ function App() {
       console.log('Message from server:', message);
       // Xử lý các tin nhắn từ server (cập nhật trạng thái người dùng, vv.)
     };
-    const getRankMultiplier = (rank) => {
-      switch (rank) {
-        case 1:
-          return 1;
-        case 2:
-          return 1.1;
-        case 3:
-          return 1.3;
-        case 4:
-          return 1.5;
-        case 5:
-          return 2;
-        default:
-          return 1;
-      }
-    };
+
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'hidden') {
         ws.send(JSON.stringify({ type: 'logout', userId }));
@@ -172,7 +129,7 @@ function App() {
       ws.close();
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [userId, setOfflineTime]);
+  }, [userId]);
 
 
 
